@@ -1,3 +1,5 @@
+const fs = require("fs");
+
 // Import access to database tables
 const tables = require("../tables");
 
@@ -41,6 +43,11 @@ const read = async (req, res, next) => {
 const add = async (req, res, next) => {
   // Extract the item data from the request body
   const item = req.body;
+  const avatar = req.file;
+
+  const newName = `${avatar.destination}/${avatar.filename}-${avatar.originalname}`;
+
+  fs.renameSync(`${avatar.destination}/${avatar.filename}`, newName);
 
   /**
    * Je vérifie si l'email est déjà utilisé
@@ -48,7 +55,7 @@ const add = async (req, res, next) => {
 
   try {
     // Insert the item into the database
-    const insertId = await tables.user.create(item);
+    const insertId = await tables.user.create(item, newName);
 
     // Respond with HTTP 201 (Created) and the ID of the newly inserted item
     res.status(201).json({ insertId });
