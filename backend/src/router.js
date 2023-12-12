@@ -1,5 +1,7 @@
 const express = require("express");
+const multer = require("multer");
 
+const upload = multer({ dest: "public/uploads/" });
 const router = express.Router();
 
 /* ************************************************************************* */
@@ -16,7 +18,7 @@ router.get("/users", userController.browse);
 router.get("/users/:id", userController.read);
 
 // Route to add a new item
-router.post("/users", userController.add);
+router.post("/users", upload.single("avatar"), userController.add);
 
 /* ************************************************************************* */
 
