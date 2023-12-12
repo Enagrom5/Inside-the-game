@@ -45,6 +45,8 @@ const add = async (req, res, next) => {
   const item = req.body;
   const avatar = req.file;
 
+  // console.log({ item, avatar });
+
   const newName = `${avatar.destination}/${avatar.filename}-${avatar.originalname}`;
 
   fs.renameSync(`${avatar.destination}/${avatar.filename}`, newName);

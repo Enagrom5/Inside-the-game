@@ -16,19 +16,40 @@ function App() {
     name: "anthony",
     email: "anthony@gorski.fr",
     password: "azertyuiop",
+    avatar: null,
   });
 
   const handleChange = (event) => {
-    setUser({ ...user, [event.target.name]: event.target.value });
+    if (event.target.name === "avatar") {
+      setUser({ ...user, avatar: event.target.files[0] });
+    } else {
+      setUser({ ...user, [event.target.name]: event.target.value });
+    }
     // setUser({ ...user, "firstname": "diogo" });
     // setUser({ ...user, "email": "diogo@wcs.fr" });
     // setUser({ ...user, "password": "azerty" });
   };
 
+  // console.log(user);
+
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    const formData = new FormData();
+    formData.append("name", user.name);
+    formData.append("email", user.email);
+    formData.append("password", user.password);
+    formData.append("avatar", user.avatar);
+
+    /**
+     * 
+     * Object.entries(user).forEach(([key, value]) => {
+          formData.append(key, value);
+        });
+     */
+
     axios
-      .post("http://localhost:3310/api/users", user)
+      .post("http://localhost:3310/api/users", formData)
       .then(() => setSuccess(!success))
       .catch((err) => console.error(err));
   };
@@ -73,6 +94,8 @@ function App() {
           onChange={handleChange}
         />{" "}
         <br />
+        <label htmlFor="avatar">Ton Avatar</label>
+        <input type="file" name="avatar" id="avatar" onChange={handleChange} />
         <button type="submit">Envoyer</button>
       </form>
     </>
