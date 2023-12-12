@@ -43,14 +43,16 @@ const read = async (req, res, next) => {
 const add = async (req, res, next) => {
   // Extract the item data from the request body
   const item = req.body;
-  const avatar = req.file;
+  let newName = `public/uploads/dafault.jpg`;
 
-  // console.log({ item, avatar });
+  if (req.file !== undefined) {
+    const avatar = req.file;
+    newName = `${avatar.destination}/${avatar.filename}-${avatar.originalname}`;
 
-  const newName = `${avatar.destination}/${avatar.filename}-${avatar.originalname}`;
+    fs.renameSync(`${avatar.destination}/${avatar.filename}`, newName);
+  }
 
-  fs.renameSync(`${avatar.destination}/${avatar.filename}`, newName);
-
+  // console.log({ item, newName });
   /**
    * Je vérifie si l'email est déjà utilisé
    */
