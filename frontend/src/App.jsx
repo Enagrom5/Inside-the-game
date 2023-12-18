@@ -59,9 +59,17 @@ function App() {
       <div>
         <ul>
           {allUser.map((uniqueUser) => (
-            <li key={uniqueUser.id}>
-              {uniqueUser.name} | {uniqueUser.email}
-            </li>
+            <>
+              <li key={uniqueUser.id}>
+                {uniqueUser.name} | {uniqueUser.email}
+              </li>
+              <img
+                src={`http://localhost:3310/${uniqueUser.image}`}
+                height="50px"
+                width="50px"
+                alt=""
+              />
+            </>
           ))}
         </ul>
       </div>
