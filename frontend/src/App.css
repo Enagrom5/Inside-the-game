@@ -54,3 +54,8 @@ code {
 button {
   font-size: calc(10px + 2vmin);
 }
+canvas {
+  width: 800px;
+  height: 700px;
+  margin: 0 auto;
+}
