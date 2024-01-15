@@ -38,18 +38,16 @@ function preload() {
 
 function create() {
   const map = this.make.tilemap({ key: "map", tileWidth: 12, tileHeight: 12 });
-  const weaponChest = map.addTilesetImage(
-    "dungeon",
-    "0x72_DungeonTilesetII_v1.6"
-  );
+  const weaponChest = map.addTilesetImage("dungeon", "dungeon");
   const land = map.addTilesetImage("Land", "First Asset pack");
 
   const water = map.createLayer("eau", land, 0, 0);
   const earth = map.createLayer("terre", land, 0, 0);
   const boat = map.createLayer("bateau", land, 0, 0);
   const tree = map.createLayer("Calque de Tuiles 5", land, 0, 0);
-  const chest = map.createLayer("Calque de Tuiles 4", land, weaponChest, 0, 0);
-  console.info(water, earth, boat, tree, chest);
+  const chest = map.createLayer("chest", weaponChest, 0, 0);
+  const rest = map.createLayer("Calque de Tuiles 4", land, 0, 0);
+  console.info(water, earth, boat, tree, chest, rest);
   // this.add.image(400, 300, "sky");
   // platforms = this.physics.add.staticGroup();
   // platforms.create(400, 568, "ground").setScale(2).refreshBody();
