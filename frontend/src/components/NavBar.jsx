@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
-import logo from "../assets/logo.svg";
+import { NavLink } from "react-router-dom";
+import logo from "../assets/logo.png";
 import "../scss/Component/Navbar.scss";
 
 function NavBar() {
@@ -10,15 +10,15 @@ function NavBar() {
         <p className="siteName">Inside the Game</p>
       </div>
       <ul className="Navbar_ul">
-        <Link to="/">
-          <li>Home</li>
-        </Link>
-        <Link to="/Connexion">
-          <li>Connexion</li>
-        </Link>
-        <Link to="/Game">
-          <li>Play</li>
-        </Link>
+        <NavLink to="/" exact activeclassname="selected">
+          Home
+        </NavLink>
+        <NavLink to="/Connexion" activeclassname="selected">
+          Contact
+        </NavLink>
+        <NavLink to="/Game" activeclassname="selected">
+          Play
+        </NavLink>
       </ul>
     </div>
   );

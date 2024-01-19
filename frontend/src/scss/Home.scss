@@ -1,0 +1,89 @@
+@import "./config.scss";
+main {
+  background-color: $navbar-color;
+}
+.HomeAll {
+  width: 100dvw;
+  height: 89.2dvh;
+  background-image: url("../assets/wall.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: $navbar-color;
+  font-family: $font-secondary;
+
+  .explicText {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+    color: $color-light;
+    height: 100%;
+    backdrop-filter: blur(2px);
+    justify-content: center;
+    align-items: center;
+
+    .textCard {
+      width: 50%;
+      height: 60%;
+      background-color: rgba($color: $color-light, $alpha: 0.4);
+      border-radius: 5rem;
+
+      h1 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+        color: black;
+        p {
+          color: $color-secondary;
+          opacity: 100%;
+        }
+      }
+      .corpsTextDiv {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        color: black;
+
+        p {
+          text-align: center;
+          width: 50%;
+          opacity: 100%;
+          font-weight: 400;
+          font-size: 1.2rem;
+          margin: 0;
+        }
+      }
+      .Connexion {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        height: 30%;
+        .disclaimer {
+          font-style: italic;
+          color: black;
+          text-align: center;
+        }
+        .HomebuttonContainer {
+          display: flex;
+          justify-content: center;
+          gap: 4rem;
+
+          .buttonHome {
+            width: 30%;
+            height: 3rem;
+            border-radius: 20px;
+            border: none;
+            background-color: $navbar-color;
+            color: $color-white;
+            font-size: 1.2rem;
+            &:hover {
+              color: $color-secondary;
+            }
+          }
+        }
+      }
+    }
+  }
+}
