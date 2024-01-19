@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "../scss/Home.scss";
 
 function Home() {
@@ -21,9 +22,11 @@ function Home() {
               Merci de vous connecter ou de vous inscrire pour jouer!
             </p>
             <div className="HomebuttonContainer">
-              <button type="button" className="buttonHome">
-                Connexion
-              </button>
+              <Link to="/Connexion">
+                <button type="button" className="buttonHome">
+                  Connexion
+                </button>
+              </Link>
               <button type="button" className="buttonHome">
                 Inscription
               </button>
