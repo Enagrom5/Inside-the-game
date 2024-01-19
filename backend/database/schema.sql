@@ -4,36 +4,16 @@
 
 CREATE TABLE `User` (
     `id` int  NOT NULL AUTO_INCREMENT,
+    `pseudo` varchar(50)  NOT NULL ,
     `name` varchar(50)  NOT NULL ,
-    `email` varchar(100)  NOT NULL ,
-    `password` varchar(255)  NOT NULL ,
-    `image` varchar(255),
+    `firstname` varchar(50)  NOT NULL ,
+    `email` varchar(100) UNIQUE NOT NULL ,
+    `password` varchar(300)  NOT NULL ,
+   
     PRIMARY KEY (
         `id`
     )
 );
 
-CREATE TABLE `Post` (
-    `id` int  NOT NULL AUTO_INCREMENT,
-    `content` text  NOT NULL ,
-    `user_id` int  NOT NULL ,
-    `categorie_id` int  NOT NULL ,
-    PRIMARY KEY (
-        `id`
-    )
-);
 
-CREATE TABLE `Categorie` (
-    `id` int  NOT NULL AUTO_INCREMENT,
-    `name` varchar(50)  NOT NULL ,
-    PRIMARY KEY (
-        `id`
-    )
-);
-
-ALTER TABLE `Post` ADD CONSTRAINT `fk_Post_user_id` FOREIGN KEY(`user_id`)
-REFERENCES `User` (`id`);
-
-ALTER TABLE `Post` ADD CONSTRAINT `fk_Post_categorie_id` FOREIGN KEY(`categorie_id`)
-REFERENCES `Categorie` (`id`);
 

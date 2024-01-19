@@ -13,7 +13,7 @@ function NavBar() {
         <NavLink to="/" exact activeclassname="selected">
           Home
         </NavLink>
-        <NavLink to="/Connexion" activeclassname="selected">
+        <NavLink to="/Contact" activeclassname="selected">
           Contact
         </NavLink>
         <NavLink to="/Game" activeclassname="selected">
