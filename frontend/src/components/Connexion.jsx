@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import "../scss/Component/Connexion.scss";
 
 export default function Connexion() {
   const [details, setDetails] = useState({
@@ -150,16 +151,16 @@ export default function Connexion() {
               >
                 Sign In
               </button>
+              <button
+                type="button"
+                onClick={() => window.location.assign("/")}
+                className="cancel"
+              >
+                Cancel
+              </button>
             </div>
             <button type="button" className="forgotPassword">
               Forgotten Password?
-            </button>
-            <button
-              type="button"
-              onClick={() => window.location.assign("/")}
-              className="cancel"
-            >
-              Cancel
             </button>
             <p className="error_container" id="errorEmail" />
             <p className="error_container" id="errorLog" />

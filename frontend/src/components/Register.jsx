@@ -83,7 +83,7 @@ function Register() {
     <div className="backgroundImageMain SignInMain">
       <div className="SignIn_container ">
         <div className="SignIn_container_title">
-          <h1>Connexion</h1>
+          <h1>Inscription</h1>
         </div>
         <form className="SignIn_container_form">
           <div className="form_placeholder">
@@ -179,14 +179,14 @@ function Register() {
             >
               Sign In
             </button>
+            <button
+              type="button"
+              onClick={() => window.location.assign("/")}
+              className="cancel"
+            >
+              Cancel
+            </button>
           </div>
-          <button
-            type="button"
-            onClick={() => window.location.assign("/")}
-            className="cancel"
-          >
-            Cancel
-          </button>
           <p className="error_container" id="errorEmail" />
           <p className="error_container" id="errorLog" />
           <p className="success_container" id="successLog" />

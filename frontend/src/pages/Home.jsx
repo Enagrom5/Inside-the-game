@@ -53,15 +53,15 @@ function Home() {
             </div>
 
             {isConnexion ? (
-              <Popup open={open} closeOnDocumentClick>
-                <Connexion />
+              <Popup open={open} closeOnDocumentClick className="connexion">
+                <Connexion className="connexion" />
               </Popup>
             ) : (
               <p />
             )}
             {isSignUp ? (
-              <Popup open={open} closeOnDocumentClick>
-                <Register />
+              <Popup open={open} closeOnDocumentClick className="register">
+                <Register className="register" />
               </Popup>
             ) : (
               <p />
