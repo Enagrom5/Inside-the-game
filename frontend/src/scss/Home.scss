@@ -77,6 +77,7 @@ main {
             border: none;
             background-color: $navbar-color;
             color: $color-white;
+            font-family: $font-primary;
             font-size: 1.2rem;
             &:hover {
               color: $color-secondary;

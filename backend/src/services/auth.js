@@ -13,7 +13,7 @@ const hashPassword = async (req, res, next) => {
   try {
     // Extraction du mot de passe de la requête
     const { password } = req.body;
-
+    console.info(password);
     // Hachage du mot de passe avec les options spécifiées
     const hashedPassword = await argon2.hash(password, hashingOptions);
 

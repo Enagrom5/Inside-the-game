@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import "../scss/Component/Connexion.scss";
 
 export default function Connexion() {
   const [details, setDetails] = useState({
@@ -50,14 +51,21 @@ export default function Connexion() {
         document.getElementById("errorLog").innerText = "";
         document.getElementById("email").classList.remove("errorOnPlaceholder");
 
-        const response = await axios.post("http://localhost:3310/api/login", {
-          email: escapeHtml(details.email),
-          password: escapeHtml(details.password),
-        });
+        const response = await axios.post(
+          "http://localhost:3310/api/login",
+          {
+            email: escapeHtml(details.email),
+            password: escapeHtml(details.password),
+          },
+          { credentials: "include" }
+        );
         console.info(response.data.message);
         document.getElementById("successLog").innerText =
           "Authentification en cours...";
         localStorage.setItem("UserToken", response.data.token);
+        setTimeout(() => {
+          window.location.href = "/Game";
+        }, 1000);
       }
     } catch (error) {
       document.getElementById("errorLog").innerText =
@@ -128,7 +136,7 @@ export default function Connexion() {
                 maxLength="32"
                 minLength="8"
                 type="password"
-                placeholder="***"
+                placeholder="********"
                 autoComplete="true"
                 aria-current="true"
                 required
@@ -137,29 +145,22 @@ export default function Connexion() {
             <div className="form_buttons">
               <button
                 type="button"
-                className="signUp"
-                onClick={() => window.location.assign("/Register")}
-              >
-                Register
-              </button>
-              <button
-                type="button"
                 disabled={!details.email || !details.password}
                 onClick={handleSubmit}
                 className="signIn"
               >
                 Sign In
               </button>
+              <button
+                type="button"
+                onClick={() => window.location.assign("/")}
+                className="cancel"
+              >
+                Cancel
+              </button>
             </div>
             <button type="button" className="forgotPassword">
               Forgotten Password?
-            </button>
-            <button
-              type="button"
-              onClick={() => window.location.assign("/")}
-              className="cancel"
-            >
-              Cancel
             </button>
             <p className="error_container" id="errorEmail" />
             <p className="error_container" id="errorLog" />
