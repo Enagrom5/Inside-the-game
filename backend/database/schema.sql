@@ -9,6 +9,8 @@ CREATE TABLE `User` (
     `firstname` varchar(50)  NOT NULL ,
     `email` varchar(100) UNIQUE NOT NULL ,
     `password` varchar(300)  NOT NULL ,
+    `save` int  
+
    
     PRIMARY KEY (
         `id`

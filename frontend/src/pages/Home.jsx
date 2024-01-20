@@ -1,7 +1,24 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import "reactjs-popup/dist/index.css";
+import Popup from "reactjs-popup";
+import Connexion from "../components/Connexion";
+import Register from "../components/Register";
 import "../scss/Home.scss";
 
 function Home() {
+  const [open, setOpen] = useState(false);
+  const [isConnexion, setIsConnexion] = useState(false);
+  const [isSignUp, setIsSignUp] = useState(false);
+
+  const openConnexion = () => {
+    setOpen(true);
+    setIsConnexion(!isConnexion);
+  };
+  const openSignUp = () => {
+    setOpen(true);
+    setIsSignUp(!isSignUp);
+  };
+
   return (
     <div className="HomeAll">
       <div className="explicText">
@@ -22,15 +39,33 @@ function Home() {
               Merci de vous connecter ou de vous inscrire pour jouer!
             </p>
             <div className="HomebuttonContainer">
-              <Link to="/Connexion">
-                <button type="button" className="buttonHome">
-                  Connexion
-                </button>
-              </Link>
-              <button type="button" className="buttonHome">
+              <button
+                type="button"
+                className="buttonHome"
+                onClick={openConnexion}
+              >
+                Connexion
+              </button>
+
+              <button type="button" className="buttonHome" onClick={openSignUp}>
                 Inscription
               </button>
             </div>
+
+            {isConnexion ? (
+              <Popup open={open} closeOnDocumentClick>
+                <Connexion />
+              </Popup>
+            ) : (
+              <p />
+            )}
+            {isSignUp ? (
+              <Popup open={open} closeOnDocumentClick>
+                <Register />
+              </Popup>
+            ) : (
+              <p />
+            )}
           </div>
         </div>
       </div>
