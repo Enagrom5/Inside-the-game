@@ -1,0 +1,72 @@
+@import "../config.scss";
+body {
+  background-color: black;
+  color: $color-white;
+  font-family: $font-secondary;
+
+  .play_container {
+    display: flex;
+    flex-direction: column;
+    margin: 0rem 2rem 0rem 2rem;
+    background-color: $color-primary;
+    gap: 2rem;
+    margin-top: 2rem;
+
+    .Button_container {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+
+      .anthony {
+        width: 20%;
+        margin: 0;
+      }
+      button {
+        font-family: $font-primary;
+        color: $color-white;
+        background-color: $navbar-color;
+        height: 2rem;
+        margin: 0rem 3% 0rem 3%;
+      }
+      button:hover {
+        color: $color-secondary;
+      }
+      .progress {
+        width: 50%;
+        height: 8rem;
+      }
+    }
+    &_instruction {
+      width: 100%;
+      display: flex;
+      margin: 1rem;
+
+      .screenLeft {
+        width: 27.5%;
+        display: flex;
+        flex-direction: column;
+        height: 15%;
+        margin-left: 2rem;
+
+        .touche {
+          display: flex;
+          align-items: center;
+          height: 10%;
+
+          img {
+            width: 15%;
+            height: 20%;
+            margin: 0rem 2rem 0rem;
+          }
+        }
+      }
+
+      canvas {
+        position: fixed;
+        height: 60%;
+        width: 45%;
+      }
+    }
+  }
+}

@@ -20,6 +20,7 @@ function Game() {
           gravity: { y: 300 },
         },
       },
+      parent: "phaserContainer",
       scene: {
         preload: preload,
         create: create,
