@@ -84,16 +84,6 @@ class UserManager extends AbstractManager {
     return user;
   }
 
-  async takeData(token) {
-    const [user] = await this.database.query(
-      `SELECT nom, prenom, rue, code_postal, ville, email, DATE_FORMAT(anniversaire, "%Y-%m-%d") as anniversaire
-             FROM user
-             WHERE token = ?`,
-      [token]
-    );
-    return user;
-  }
-
   // The D of CRUD - Delete operation
   // TODO: Implement the delete operation to remove an item by its ID
 }

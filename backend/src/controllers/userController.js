@@ -62,7 +62,7 @@ const login = async (req, res, next) => {
 
         const tokenUser = jwt.sign(
           { email: user[0].email, userId: user[0].id },
-          process.env.JWT_SECRET,
+          process.env.APP_SECRET,
           { expiresIn: "1h" }
         );
 
@@ -109,29 +109,19 @@ const checktoken = async (req, res, next) => {
     const { token } = req.cookies;
 
     try {
-      const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+      const decodedToken = jwt.verify(token, process.env.APP_SECRET);
 
       const { userId } = decodedToken;
       const checkUserToken = await tables.user.checkToken(token);
+
       if (
         checkUserToken.length === 1 &&
         checkUserToken[0].token === token &&
-        checkUserToken[0].id === userId &&
-        checkUserToken[0].admin === 1
+        checkUserToken[0].id === userId
       ) {
         res.status(200).send({
           message: "OK",
-          admin: true,
-        });
-      } else if (
-        checkUserToken.length === 1 &&
-        checkUserToken[0].token === token &&
-        checkUserToken[0].id === userId &&
-        checkUserToken[0].admin === 0
-      ) {
-        res.status(200).send({
-          message: "OK",
-          admin: false,
+          id: userId,
         });
       } else res.status(200).send({ message: "Error" });
     } catch (err) {
@@ -152,20 +142,6 @@ const logout = async (req, res, next) => {
 // The D of BREAD - Destroy (Delete) operation
 // This operation is not yet implemented
 
-const takeData = async (req, res, next) => {
-  try {
-    const { token } = req.cookies;
-    const userData = await tables.user.takeData(token);
-    if (userData.length === 1) {
-      res.status(200).send(userData);
-    } else {
-      res.status(200).send({ message: "No User" });
-    }
-  } catch (err) {
-    next(err);
-  }
-};
-
 // Ready to export the controller functions
 module.exports = {
   browse,
@@ -173,6 +149,5 @@ module.exports = {
   add,
   login,
   checktoken,
-  takeData,
   logout,
 };

@@ -26,7 +26,7 @@ router.post("/login", userController.login);
 router.get("/checktoken", userController.checktoken);
 
 // Route to verify token
-router.get("/takedata", userController.takeData);
+
 router.get("/logout", userController.logout);
 
 /* ************************************************************************* */
