@@ -7,7 +7,7 @@ import firstmap from "../assets/TileMaps/Firstmap.json";
 // import dungeon from "../assets/Tiles/0x72_DungeonTilesetII_v1.6/0x72_DungeonTilesetII_v1.6/0x72_DungeonTilesetII_v1.6.png";
 import RPG12 from "../assets/Tiles/RPG 12x12/First Asset pack.png";
 
-function Game() {
+function Game1() {
   useEffect(() => {
     const gameConfig = {
       type: Phaser.AUTO,
@@ -152,4 +152,4 @@ function Game() {
   return <div id="phaserContainer">{/** le contenu du jeu type sprite */}</div>;
 }
 
-export default Game;
+export default Game1;

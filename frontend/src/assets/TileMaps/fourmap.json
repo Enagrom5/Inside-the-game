@@ -105,7 +105,7 @@
         {
          "columns":36,
          "firstgid":1,
-         "image":"The Fan-tasy Tileset (Free) 1.2.4\/The Fan-tasy Tileset (Free)\/Art\/Tileset_Ground.png",
+         "image":"..\/Tiles\/The Fan-tasy Tileset (Free) 1.2.4\/The Fan-tasy Tileset (Free)\/Art\/Tileset_Ground.png",
          "imageheight":672,
          "imagewidth":576,
          "margin":0,
@@ -118,7 +118,7 @@
         {
          "columns":6,
          "firstgid":1513,
-         "image":"The Fan-tasy Tileset (Free) 1.2.4\/The Fan-tasy Tileset (Free)\/Art\/Tileset_Road.png",
+         "image":"..\/Tiles\/The Fan-tasy Tileset (Free) 1.2.4\/The Fan-tasy Tileset (Free)\/Art\/Tileset_Road.png",
          "imageheight":160,
          "imagewidth":96,
          "margin":0,
@@ -131,7 +131,7 @@
         {
          "columns":18,
          "firstgid":1573,
-         "image":"The Fan-tasy Tileset (Free) 1.2.4\/The Fan-tasy Tileset (Free)\/Art\/Props.png",
+         "image":"..\/Tiles\/The Fan-tasy Tileset (Free) 1.2.4\/The Fan-tasy Tileset (Free)\/Art\/Props.png",
          "imageheight":160,
          "imagewidth":288,
          "margin":0,
@@ -144,7 +144,7 @@
         {
          "columns":13,
          "firstgid":1753,
-         "image":"The Fan-tasy Tileset (Free) 1.2.4\/The Fan-tasy Tileset (Free)\/Art\/Buildings.png",
+         "image":"..\/Tiles\/The Fan-tasy Tileset (Free) 1.2.4\/The Fan-tasy Tileset (Free)\/Art\/Buildings.png",
          "imageheight":544,
          "imagewidth":208,
          "margin":0,
@@ -157,7 +157,7 @@
         {
          "columns":11,
          "firstgid":2195,
-         "image":"The Fan-tasy Tileset (Free) 1.2.4\/The Fan-tasy Tileset (Free)\/Art\/Rocks.png",
+         "image":"..\/Tiles\/The Fan-tasy Tileset (Free) 1.2.4\/The Fan-tasy Tileset (Free)\/Art\/Rocks.png",
          "imageheight":32,
          "imagewidth":182,
          "margin":0,
@@ -170,7 +170,7 @@
         {
          "columns":24,
          "firstgid":2217,
-         "image":"The Fan-tasy Tileset (Free) 1.2.4\/The Fan-tasy Tileset (Free)\/Art\/Trees_Bushes.png",
+         "image":"..\/Tiles\/The Fan-tasy Tileset (Free) 1.2.4\/The Fan-tasy Tileset (Free)\/Art\/Trees_Bushes.png",
          "imageheight":96,
          "imagewidth":384,
          "margin":0,
@@ -183,7 +183,7 @@
         {
          "columns":24,
          "firstgid":2361,
-         "image":"The Fan-tasy Tileset (Free) 1.2.4\/The Fan-tasy Tileset (Free)\/Art\/Animations\/Tileset_Water.png",
+         "image":"..\/Tiles\/The Fan-tasy Tileset (Free) 1.2.4\/The Fan-tasy Tileset (Free)\/Art\/Animations\/Tileset_Water.png",
          "imageheight":192,
          "imagewidth":384,
          "margin":0,
@@ -192,6 +192,19 @@
          "tilecount":288,
          "tileheight":16,
          "tilewidth":16
+        }, 
+        {
+         "columns":16,
+         "firstgid":2649,
+         "image":"..\/Tiles\/Pixel Art Top Down - Basic\/Texture\/TX Props.png",
+         "imageheight":512,
+         "imagewidth":512,
+         "margin":0,
+         "name":"TX Props",
+         "spacing":0,
+         "tilecount":256,
+         "tileheight":32,
+         "tilewidth":32
         }],
  "tilewidth":16,
  "type":"map",

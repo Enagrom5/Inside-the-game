@@ -3,7 +3,10 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Lottie from "react-lottie-player";
-import Game from "../components/game";
+import Game1 from "../components/game1";
+import Game2 from "../components/game2";
+import Game3 from "../components/game3";
+import Game4 from "../components/game4";
 import bas from "../assets/bas.svg";
 import haut from "../assets/haut.svg";
 import gauche from "../assets/gauche.svg";
@@ -136,7 +139,10 @@ function Play() {
             <p>Attaquer</p>
           </div>
         </div>
-        <Game />
+        {save === 1 ? <Game1 /> : <p />}
+        {save === 2 ? <Game2 /> : <p />}
+        {save === 3 ? <Game3 /> : <p />}
+        {save === 4 ? <Game4 /> : <p />}
         <div className="nextButton">
           <button type="button" disabled="disabled">
             Niveau suivant

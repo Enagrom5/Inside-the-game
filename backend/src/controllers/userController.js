@@ -34,7 +34,7 @@ const read = async (req, res, next) => {
 const add = async (req, res, next) => {
   // Extract the item data from the request body
   const user = req.body;
-  console.info(user);
+
   try {
     // Insert the item into the database
     const insertId = await tables.user.create(user);
@@ -114,7 +114,7 @@ const checktoken = async (req, res, next) => {
 
       const { userId } = decodedToken;
       const checkUserToken = await tables.user.checkToken(token);
-      console.info(checkUserToken);
+
       if (
         checkUserToken.length === 1 &&
         checkUserToken[0].token === token &&
