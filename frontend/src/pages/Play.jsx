@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-expressions */
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Lottie from "react-lottie-player";
 import Game from "../components/game";
 import bas from "../assets/bas.svg";
@@ -14,11 +15,15 @@ import progress2 from "../assets/progress2.png";
 import progress3 from "../assets/progress3.png";
 import progress4 from "../assets/progress4.png";
 import mailError from "../assets/EmailError.json";
+import "../scss/Component/Game.scss";
 
 function Play() {
   const [/* isLoading */ setIsLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userId, setUserId] = useState("");
+  const [save, setSave] = useState(1);
+
+  // vérifie qu'on est bien connecter pour modifier l'affichage de la page en fonction
 
   useEffect(() => {
     axios
@@ -29,23 +34,28 @@ function Play() {
         if (res.data.message === "OK") {
           setIsLoggedIn(true);
           setUserId(res.data.id);
+          setSave(res.data.save);
         } else {
           setIsLoggedIn(false);
           setTimeout(() => {
             window.location.href = "/";
-          }, 3800);
+          }, 1500);
         }
         setIsLoading(false);
       });
   }, []);
   // eslint-disable-next-line no-unused-vars
-  const [save, setSave] = useState(2);
+
   let progress;
-  console.info(userId);
+
+  // permet in affichage intéractif de la map en fonction du niveau ou on est
+
   save === 1 ? (progress = progress1) : null;
   save === 2 ? (progress = progress2) : null;
   save === 3 ? (progress = progress3) : null;
   save === 4 ? (progress = progress4) : null;
+
+  // envoi dans le back la progression pour que ce soit mis à jour dans la db
 
   const saveProgress = () => {
     axios
@@ -58,6 +68,8 @@ function Play() {
       )
       .catch((err) => console.error(err));
   };
+
+  // si on n'est pas connecté on est invité à le faire
 
   if (!isLoggedIn) {
     return (
@@ -75,11 +87,15 @@ function Play() {
         Vous devez vous connecter pour acceder à cette page.  `}
             <br /> {` Vous allez être redirigé(e) vers la page de connexion. `}
           </p>
-          <button type="button">Se connecter</button>
+          <Link to="/">
+            <button type="button">Se connecter</button>
+          </Link>
         </div>
       </section>
     );
   }
+  // si on est connecté on peut jouer
+
   return (
     <div className="play_container">
       <div className="Button_container">
@@ -121,6 +137,11 @@ function Play() {
           </div>
         </div>
         <Game />
+        <div className="nextButton">
+          <button type="button" disabled="disabled">
+            Niveau suivant
+          </button>
+        </div>
       </div>
     </div>
   );

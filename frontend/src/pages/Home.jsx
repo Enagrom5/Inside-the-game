@@ -24,9 +24,6 @@ function Home() {
           setIsLoggedIn(true);
         } else {
           setIsLoggedIn(false);
-          setTimeout(() => {
-            window.location.href = "/";
-          }, 3800);
         }
         setIsLoading(false);
       });

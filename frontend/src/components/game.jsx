@@ -6,7 +6,6 @@ import Phaser from "phaser";
 import firstmap from "../assets/TileMaps/Firstmap.json";
 // import dungeon from "../assets/Tiles/0x72_DungeonTilesetII_v1.6/0x72_DungeonTilesetII_v1.6/0x72_DungeonTilesetII_v1.6.png";
 import RPG12 from "../assets/Tiles/RPG 12x12/First Asset pack.png";
-import "../scss/Component/Game.scss";
 
 function Game() {
   useEffect(() => {

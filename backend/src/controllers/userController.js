@@ -114,7 +114,7 @@ const checktoken = async (req, res, next) => {
 
       const { userId } = decodedToken;
       const checkUserToken = await tables.user.checkToken(token);
-
+      console.info(checkUserToken);
       if (
         checkUserToken.length === 1 &&
         checkUserToken[0].token === token &&
@@ -123,6 +123,7 @@ const checktoken = async (req, res, next) => {
         res.status(200).send({
           message: "OK",
           id: userId,
+          save: checkUserToken[0].save,
         });
       } else res.status(200).send({ message: "Error" });
     } catch (err) {

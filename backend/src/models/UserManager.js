@@ -82,6 +82,7 @@ class UserManager extends AbstractManager {
              WHERE u.token = ?`,
       [token]
     );
+
     return user;
   }
 
