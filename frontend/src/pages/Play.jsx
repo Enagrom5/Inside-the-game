@@ -1,4 +1,7 @@
 /* eslint-disable no-unused-expressions */
+import axios from "axios";
+import { useEffect, useState } from "react";
+import Lottie from "react-lottie-player";
 import Game from "../components/game";
 import bas from "../assets/bas.svg";
 import haut from "../assets/haut.svg";
@@ -10,15 +13,61 @@ import progress1 from "../assets/progress1.png";
 import progress2 from "../assets/progress2.png";
 import progress3 from "../assets/progress3.png";
 import progress4 from "../assets/progress4.png";
+import mailError from "../assets/EmailError.json";
 
 function Play() {
+  const [/* isLoading */ setIsLoading] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userId, setUserId] = useState("");
+
+  useEffect(() => {
+    axios
+      .get(`${import.meta.env.VITE_BACKEND_URL}/api/checktoken`, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        console.info(res.data.message);
+        if (res.data.message === "OK") {
+          setIsLoggedIn(true);
+          setUserId(res.data.id);
+        } else {
+          setIsLoggedIn(false);
+          setTimeout(() => {
+            window.location.href = "/";
+          }, 3800);
+        }
+        setIsLoading(false);
+      });
+  }, []);
   const save = 1;
   let progress;
-
+  console.info(userId);
   save === 1 ? (progress = progress1) : null;
   save === 2 ? (progress = progress2) : null;
   save === 3 ? (progress = progress3) : null;
   save === 4 ? (progress = progress4) : null;
+
+  if (!isLoggedIn) {
+    return (
+      <section>
+        <div className="containererror">
+          <Lottie
+            loop
+            animationData={mailError}
+            play
+            style={{ width: 120, height: 120 }}
+          />
+          <h1>Accès Impossible</h1>
+          <p className="message">
+            {`
+        Vous devez vous connecter pour acceder à cette page.  `}
+            <br /> {` Vous allez être redirigé(e) vers la page de connexion. `}
+          </p>
+          <button type="button">Se connecter</button>
+        </div>
+      </section>
+    );
+  }
   return (
     <div className="play_container">
       <div className="Button_container">

@@ -57,14 +57,14 @@ export default function Connexion() {
             email: escapeHtml(details.email),
             password: escapeHtml(details.password),
           },
-          { credentials: "include" }
+          { withCredentials: true }
         );
         console.info(response.data.message);
         document.getElementById("successLog").innerText =
           "Authentification en cours...";
-        localStorage.setItem("UserToken", response.data.token);
+
         setTimeout(() => {
-          window.location.href = "/Game";
+          window.location.href = "/Play";
         }, 1000);
       }
     } catch (error) {
@@ -74,29 +74,24 @@ export default function Connexion() {
   };
   const [isLoading, setIsLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   // setIsLoggedIn(isLoggedIn);
 
   useEffect(() => {
-    if (localStorage.getItem("UserToken") !== null) {
-      axios
-        .post(`${import.meta.env.VITE_BACKEND_URL}/api/checktoken`, {
-          token: localStorage.getItem("UserToken"),
-        })
-        .then((res) => {
-          if (res.data.message === "OK") {
-            console.info("Connexion Approuvée");
-            setIsLoggedIn(true);
-            setTimeout(() => {
-              window.location.href = "/Game";
-            }, 3800);
-          } else {
-            setIsLoggedIn(false);
-          }
-          setIsLoading(false);
-        });
-    } else {
-      setIsLoading(false);
-    }
+    axios
+      .get(`${import.meta.env.VITE_BACKEND_URL}/api/checktoken`, {
+        withCredentials: true,
+      })
+
+      .then((res) => {
+        if (res.data.message === "OK") {
+          setIsLoggedIn(true);
+          window.location.href = "/Play";
+        } else {
+          setIsLoggedIn(false);
+        }
+        setIsLoading(false);
+      });
   }, []);
 
   // if (isLoading) {
