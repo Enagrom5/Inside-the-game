@@ -9,6 +9,7 @@ const router = express.Router();
 
 // Import userController module for handling item-related operations
 const userController = require("./controllers/userController");
+const saveController = require("./controllers/saveController");
 
 // Route to get a list of items
 router.get("/users", userController.browse);
@@ -26,8 +27,16 @@ router.post("/login", userController.login);
 router.get("/checktoken", userController.checktoken);
 
 // Route to verify token
-
 router.get("/logout", userController.logout);
+
+// Route to get a save data by id user
+router.get("/saves", saveController.read);
+
+// Route to post a save data by id user
+router.post("/saves", saveController.add);
+
+// Route to update a save data by id user
+router.put("/saves", saveController.edit);
 
 /* ************************************************************************* */
 

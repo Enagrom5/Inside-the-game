@@ -26,7 +26,6 @@ function Play() {
         withCredentials: true,
       })
       .then((res) => {
-        console.info(res.data.message);
         if (res.data.message === "OK") {
           setIsLoggedIn(true);
           setUserId(res.data.id);
@@ -39,13 +38,26 @@ function Play() {
         setIsLoading(false);
       });
   }, []);
-  const save = 1;
+  // eslint-disable-next-line no-unused-vars
+  const [save, setSave] = useState(2);
   let progress;
   console.info(userId);
   save === 1 ? (progress = progress1) : null;
   save === 2 ? (progress = progress2) : null;
   save === 3 ? (progress = progress3) : null;
   save === 4 ? (progress = progress4) : null;
+
+  const saveProgress = () => {
+    axios
+      .put(
+        `${import.meta.env.VITE_BACKEND_URL}/api/saves`,
+        { userId, save },
+        {
+          withCredentials: true,
+        }
+      )
+      .catch((err) => console.error(err));
+  };
 
   if (!isLoggedIn) {
     return (
@@ -76,7 +88,9 @@ function Play() {
           pourras suivre ma progression sur la map
         </p>
         <img className="progress" src={progress} alt="progress" />
-        <button type="button">Sauvegarde</button>
+        <button type="button" onClick={saveProgress}>
+          Sauvegarde
+        </button>
       </div>
       <div className="play_container_instruction">
         <div className="screenLeft">

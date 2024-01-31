@@ -76,9 +76,10 @@ class UserManager extends AbstractManager {
 
   async checkToken(token) {
     const [user] = await this.database.query(
-      `SELECT *
-             FROM user
-             WHERE token = ?`,
+      `SELECT u.id, u.pseudo, u.name, u.firstname, u.token,s.save
+             FROM user as u
+             left join save as s on u.id = s.user_id
+             WHERE u.token = ?`,
       [token]
     );
     return user;

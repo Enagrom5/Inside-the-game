@@ -38,6 +38,7 @@ const add = async (req, res, next) => {
   try {
     // Insert the item into the database
     const insertId = await tables.user.create(user);
+    await tables.save.create(1, insertId);
 
     // Respond with HTTP 201 (Created) and the ID of the newly inserted item
     res.status(201).json({ insertId });
