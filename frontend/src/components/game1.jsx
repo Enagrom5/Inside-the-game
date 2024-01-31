@@ -4,7 +4,7 @@
 import { useEffect } from "react";
 import Phaser from "phaser";
 import firstmap from "../assets/TileMaps/Firstmap.json";
-// import dungeon from "../assets/Tiles/0x72_DungeonTilesetII_v1.6/0x72_DungeonTilesetII_v1.6/0x72_DungeonTilesetII_v1.6.png";
+import anthony from "../assets/Tiles/Puny-Characters/Puny-Characters/Character-Base.png";
 import RPG12 from "../assets/Tiles/RPG 12x12/First Asset pack.png";
 
 function Game1() {
@@ -15,24 +15,26 @@ function Game1() {
       height: 240,
       physics: {
         default: "arcade",
-        arcade: {
-          gravity: { y: 300 },
-        },
+        arcade: {},
       },
       parent: "phaserContainer",
       scene: {
         preload: preload,
         create: create,
-        // update: update,
+        update: update,
       },
     };
     function preload() {
       this.load.image("First Asset pack", RPG12);
       this.load.tilemapTiledJSON("map", firstmap);
+      this.load.spritesheet("anthony", anthony, {
+        frameWidth: 32,
+        frameHeight: 32,
+      });
     }
     const game = new Phaser.Game(gameConfig);
     // let platforms;
-    // let player;
+    let player;
     // let stars;
     // let score = 0;
     // let scoreText;
@@ -53,6 +55,51 @@ function Game1() {
       const tree = map.createLayer("Calque de Tuiles 5", land, 0, 0);
       const rest = map.createLayer("Calque de Tuiles 4", land, 0, 0);
       console.info(water, earth, boat, tree, rest);
+
+      player = this.physics.add.sprite(199, 100, "anthony");
+      this.anims.create({
+        key: "left",
+        frames: this.anims.generateFrameNumbers("anthony", {
+          start: 145,
+          end: 148,
+        }),
+        frameRate: 10,
+        repeat: -1,
+      });
+
+      this.anims.create({
+        key: "turn",
+        frames: [{ key: "anthony", frame: 96 }],
+        frameRate: 20,
+      });
+
+      this.anims.create({
+        key: "right",
+        frames: this.anims.generateFrameNumbers("anthony", {
+          start: 48,
+          end: 51,
+        }),
+        frameRate: 10,
+        repeat: -1,
+      });
+      this.anims.create({
+        key: "up",
+        frames: this.anims.generateFrameNumbers("anthony", {
+          start: 97,
+          end: 100,
+        }),
+        frameRate: 10,
+        repeat: -1,
+      });
+      this.anims.create({
+        key: "down",
+        frames: this.anims.generateFrameNumbers("anthony", {
+          start: 1,
+          end: 3,
+        }),
+        frameRate: 10,
+        repeat: -1,
+      });
 
       // this.add.image(400, 300, "sky");
       // platforms = this.physics.add.staticGroup();
@@ -124,27 +171,29 @@ function Game1() {
       // this.physics.add.collider(player, bombs, hitBomb, null, this);
     }
 
-    // let cursors;
-    // function update() {
-    //   cursors = this.input.keyboard.createCursorKeys();
-    //   if (cursors.left.isDown) {
-    //     player.setVelocityX(-160);
+    let cursors;
+    function update() {
+      cursors = this.input.keyboard.createCursorKeys();
 
-    //     player.anims.play("left", true);
-    //   } else if (cursors.right.isDown) {
-    //     player.setVelocityX(160);
+      if (cursors.left.isDown) {
+        player.setVelocityX(-100);
+        player.anims.play("left", true);
+      } else if (cursors.right.isDown) {
+        player.setVelocityX(100);
+        player.anims.play("right", true);
+      } else if (cursors.up.isDown) {
+        player.setVelocityY(-100);
+        player.anims.play("up", true);
+      } else if (cursors.down.isDown) {
+        player.setVelocityY(100);
+        player.anims.play("down", true);
+      } else {
+        player.setVelocityX(0);
+        player.setVelocityY(0);
 
-    //     player.anims.play("right", true);
-    //   } else {
-    //     player.setVelocityX(0);
-
-    //     player.anims.play("turn");
-    //   }
-
-    //   if (cursors.up.isDown && player.body.touching.down) {
-    //     player.setVelocityY(-330);
-    //   }
-    // }
+        player.anims.play("turn");
+      }
+    }
     return () => {
       game.destroy(true);
     };

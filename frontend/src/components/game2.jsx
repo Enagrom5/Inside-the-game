@@ -14,7 +14,7 @@ function Game2() {
   useEffect(() => {
     const gameConfig = {
       type: Phaser.AUTO,
-      width: 320,
+      width: 330,
       height: 320,
       physics: {
         default: "arcade",
