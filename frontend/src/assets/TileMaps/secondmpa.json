@@ -197,6 +197,20 @@
          "tilecount":6300,
          "tileheight":16,
          "tilewidth":16
+        }, 
+        {
+         "columns":29,
+         "firstgid":8339,
+         "image":"..\/Tiles\/RPG 12x12\/First Asset pack.png",
+         "imageheight":384,
+         "imagewidth":384,
+         "margin":1,
+         "name":"Land",
+         "spacing":1,
+         "tilecount":841,
+         "tileheight":12,
+         "tilewidth":12,
+         "transparentcolor":"#ff00ff"
         }],
  "tilewidth":16,
  "type":"map",

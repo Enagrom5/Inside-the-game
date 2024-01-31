@@ -15,7 +15,6 @@ function Game1() {
       height: 240,
       physics: {
         default: "arcade",
-        arcade: {},
       },
       parent: "phaserContainer",
       scene: {
@@ -44,19 +43,22 @@ function Game1() {
     function create() {
       const map = this.make.tilemap({
         key: "map",
-        tileWidth: 12,
-        tileHeight: 12,
+        tileWidth: 16,
+        tileHeight: 16,
       });
-      const land = map.addTilesetImage("Land", "First Asset pack");
+      const land = map.addTilesetImage("First Asset pack", "First Asset pack");
+      const newland = map.addTilesetImage("Land", "First Asset pack");
+      const allLayer = [land, newland];
 
-      const water = map.createLayer("eau", land, 0, 0);
-      const earth = map.createLayer("terre", land, 0, 0);
-      const boat = map.createLayer("bateau", land, 0, 0);
-      const tree = map.createLayer("Calque de Tuiles 5", land, 0, 0);
-      const rest = map.createLayer("Calque de Tuiles 4", land, 0, 0);
-      console.info(water, earth, boat, tree, rest);
+      const water = map.createLayer("eau", allLayer, 0, 0);
+      const earth = map.createLayer("terre", allLayer, 0, 0);
+      const boat = map.createLayer("bateau", allLayer, 0, 0);
+      const tree = map.createLayer("Calque de Tuiles 5", allLayer, 0, 0);
+      const rest = map.createLayer("Calque de Tuiles 4", allLayer, 0, 0);
+      console.info(earth, boat, tree, rest, water);
 
       player = this.physics.add.sprite(199, 100, "anthony");
+      console.info(player);
       this.anims.create({
         key: "left",
         frames: this.anims.generateFrameNumbers("anthony", {
@@ -69,7 +71,7 @@ function Game1() {
 
       this.anims.create({
         key: "turn",
-        frames: [{ key: "anthony", frame: 96 }],
+        frames: [{ key: "anthony", frame: 1 }],
         frameRate: 20,
       });
 
@@ -86,7 +88,7 @@ function Game1() {
         key: "up",
         frames: this.anims.generateFrameNumbers("anthony", {
           start: 97,
-          end: 100,
+          end: 99,
         }),
         frameRate: 10,
         repeat: -1,
@@ -100,6 +102,45 @@ function Game1() {
         frameRate: 10,
         repeat: -1,
       });
+      this.anims.create({
+        key: "attack_down",
+        frames: this.anims.generateFrameNumbers("anthony", {
+          start: 5,
+          end: 7,
+        }),
+        frameRate: 25,
+        repeat: -1,
+      });
+      this.anims.create({
+        key: "attack_up",
+        frames: this.anims.generateFrameNumbers("anthony", {
+          start: 102,
+          end: 104,
+        }),
+        frameRate: 25,
+        repeat: -1,
+      });
+      this.anims.create({
+        key: "attack_left",
+        frames: this.anims.generateFrameNumbers("anthony", {
+          start: 149,
+          end: 151,
+        }),
+        frameRate: 25,
+        repeat: -1,
+      });
+      this.anims.create({
+        key: "attack_right",
+        frames: this.anims.generateFrameNumbers("anthony", {
+          start: 53,
+          end: 55,
+        }),
+        frameRate: 25,
+        repeat: -1,
+      });
+
+      this.physics.add.collider(player, water);
+      water.setCollisionBetween(368, 428);
 
       // this.add.image(400, 300, "sky");
       // platforms = this.physics.add.staticGroup();
@@ -174,8 +215,15 @@ function Game1() {
     let cursors;
     function update() {
       cursors = this.input.keyboard.createCursorKeys();
-
-      if (cursors.left.isDown) {
+      if (cursors.shift.isDown && cursors.down.isDown) {
+        player.anims.play("attack_down", true);
+      } else if (cursors.shift.isDown && cursors.up.isDown) {
+        player.anims.play("attack_up", true);
+      } else if (cursors.shift.isDown && cursors.left.isDown) {
+        player.anims.play("attack_left", true);
+      } else if (cursors.shift.isDown && cursors.right.isDown) {
+        player.anims.play("attack_right", true);
+      } else if (cursors.left.isDown) {
         player.setVelocityX(-100);
         player.anims.play("left", true);
       } else if (cursors.right.isDown) {
@@ -187,10 +235,11 @@ function Game1() {
       } else if (cursors.down.isDown) {
         player.setVelocityY(100);
         player.anims.play("down", true);
+      } else if (cursors.shift.isDown) {
+        player.anims.play("attack_down", true);
       } else {
         player.setVelocityX(0);
         player.setVelocityY(0);
-
         player.anims.play("turn");
       }
     }
