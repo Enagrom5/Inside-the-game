@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react/no-this-in-sfc */
 /* eslint-disable no-use-before-define */
 /* eslint-disable object-shorthand */
@@ -9,9 +10,11 @@ import Tiles from "../assets/Tiles/Legacy-Fantasy - High Forest 2.0/Legacy-Fanta
 import Rocks from "../assets/Tiles/Legacy-Fantasy - High Forest 2.0/Legacy-Fantasy - High Forest 2.3/Assets/Props-Rocks.png";
 import Trees from "../assets/Tiles/Legacy-Fantasy - High Forest 2.0/Legacy-Fantasy - High Forest 2.3/Trees/Green-Tree.png";
 import champ from "../assets/Tiles/Legacy-Fantasy - High Forest 2.0/Legacy-Fantasy - High Forest 2.3/Assets/Tree-Assets.png";
-import anthony from "../assets/Tiles/Puny-Characters/Puny-Characters/Character-Base.png";
+import face from "../assets/Tiles/Puny-Characters/Puny-Characters/charater_face.png";
+import Chest from "../assets/Tiles/0x72_DungeonTilesetII_v1.6/0x72_DungeonTilesetII_v1.6/frames/chest_empty_open_anim_f0.png";
+import ChestOpen from "../assets/Tiles/0x72_DungeonTilesetII_v1.6/0x72_DungeonTilesetII_v1.6/frames/chest_empty_open_anim_f2.png";
 
-function Game2() {
+function Game2({ setScore }) {
   useEffect(() => {
     const gameConfig = {
       type: Phaser.AUTO,
@@ -20,7 +23,7 @@ function Game2() {
       physics: {
         default: "arcade",
         arcade: {
-          gravity: { y: 300 },
+          gravity: { y: 1000 },
         },
       },
       parent: "phaserContainer",
@@ -36,20 +39,19 @@ function Game2() {
       this.load.image("Rocks", Rocks);
       this.load.image("Trees", Trees);
       this.load.image("champ", champ);
-      this.load.spritesheet("anthony", anthony, {
-        frameWidth: 32,
-        frameHeight: 32,
+      this.load.spritesheet("anthoface", face, {
+        frameWidth: 16,
+        frameHeight: 16,
       });
+      this.load.image("chest", Chest);
+      this.load.image("chest_open", ChestOpen);
       this.load.tilemapTiledJSON("map", secondmap);
     }
     const game = new Phaser.Game(gameConfig);
     // let platforms;
     let player;
-    // let stars;
-    // let score = 0;
-    // let scoreText;
+    let chest;
     // let gameOver = false;
-    // let bombs;
 
     function create() {
       const map = this.make.tilemap({
@@ -71,15 +73,19 @@ function Game2() {
       const forest = map.createLayer("1", allLayer, 0, 0);
 
       console.info(water, back, arbres, forest);
-      player = this.physics.add.sprite(10, 250, "anthony");
+
+      chest = this.physics.add.staticGroup();
+      chest.create(300, 22, "chest");
+
+      player = this.physics.add.sprite(20, 230, "anthoface");
       player.setCollideWorldBounds(true);
       // AJOUT DE SES DEPLACEMENTS
 
       this.anims.create({
         key: "left",
-        frames: this.anims.generateFrameNumbers("anthony", {
-          start: 145,
-          end: 148,
+        frames: this.anims.generateFrameNumbers("anthoface", {
+          start: 24,
+          end: 27,
         }),
         frameRate: 10,
         repeat: -1,
@@ -87,31 +93,31 @@ function Game2() {
 
       this.anims.create({
         key: "turn",
-        frames: [{ key: "anthony", frame: 1 }],
+        frames: [{ key: "anthoface", frame: 1 }],
         frameRate: 20,
       });
 
       this.anims.create({
         key: "right",
-        frames: this.anims.generateFrameNumbers("anthony", {
-          start: 48,
-          end: 51,
+        frames: this.anims.generateFrameNumbers("anthoface", {
+          start: 8,
+          end: 11,
         }),
         frameRate: 10,
         repeat: -1,
       });
       this.anims.create({
         key: "up",
-        frames: this.anims.generateFrameNumbers("anthony", {
-          start: 97,
-          end: 99,
+        frames: this.anims.generateFrameNumbers("anthoface", {
+          start: 16,
+          end: 19,
         }),
         frameRate: 10,
         repeat: -1,
       });
       this.anims.create({
         key: "down",
-        frames: this.anims.generateFrameNumbers("anthony", {
+        frames: this.anims.generateFrameNumbers("anthoface", {
           start: 1,
           end: 3,
         }),
@@ -120,8 +126,8 @@ function Game2() {
       });
       this.anims.create({
         key: "attack_down",
-        frames: this.anims.generateFrameNumbers("anthony", {
-          start: 5,
+        frames: this.anims.generateFrameNumbers("anthoface", {
+          start: 4,
           end: 7,
         }),
         frameRate: 25,
@@ -129,43 +135,65 @@ function Game2() {
       });
       this.anims.create({
         key: "attack_up",
-        frames: this.anims.generateFrameNumbers("anthony", {
-          start: 102,
-          end: 104,
+        frames: this.anims.generateFrameNumbers("anthoface", {
+          start: 20,
+          end: 23,
         }),
         frameRate: 25,
         repeat: -1,
       });
       this.anims.create({
         key: "attack_left",
-        frames: this.anims.generateFrameNumbers("anthony", {
-          start: 149,
-          end: 151,
+        frames: this.anims.generateFrameNumbers("anthoface", {
+          start: 28,
+          end: 31,
         }),
         frameRate: 25,
         repeat: -1,
       });
       this.anims.create({
         key: "attack_right",
-        frames: this.anims.generateFrameNumbers("anthony", {
-          start: 53,
-          end: 55,
+        frames: this.anims.generateFrameNumbers("anthoface", {
+          start: 12,
+          end: 15,
         }),
         frameRate: 25,
         repeat: -1,
       });
+
+      function win() {
+        setScore((prev) => prev + 1000);
+        this.physics.pause();
+      }
+
+      this.physics.add.overlap(chest, player, win, null, this);
+      this.physics.add.collider(player, forest);
+      this.physics.add.collider(player, water);
+
+      forest.setCollisionBetween(25, 30);
+      water.setCollisionBetween(25, 29);
+      forest.setCollisionBetween(385, 388);
+      water.setCollisionBetween(155, 157);
+      forest.setCollisionBetween(155, 157);
+      water.setCollisionBetween(385, 388);
+      forest.setCollisionBetween(31, 55);
+      forest.setCollisionBetween(285, 289);
     }
     let cursors;
     function update() {
       cursors = this.input.keyboard.createCursorKeys();
-      if (cursors.shift.isDown && cursors.down.isDown) {
-        player.anims.play("attack_down", true);
-      } else if (cursors.shift.isDown && cursors.up.isDown) {
-        player.anims.play("attack_up", true);
-      } else if (cursors.shift.isDown && cursors.left.isDown) {
-        player.anims.play("attack_left", true);
-      } else if (cursors.shift.isDown && cursors.right.isDown) {
-        player.anims.play("attack_right", true);
+
+      if (cursors.space.isDown && cursors.up.isDown) {
+        player.anims.play("up", true);
+        player.setVelocityY(-130);
+      } else if (cursors.space.isDown && cursors.left.isDown) {
+        player.anims.play("left", true);
+        player.setVelocityY(-130);
+        player.setVelocityX(-160);
+      } else if (cursors.space.isDown && cursors.right.isDown) {
+        player.anims.play("right", true);
+        player.setVelocityY(-130);
+        player.setVelocityX(160);
       } else if (cursors.left.isDown) {
         player.setVelocityX(-100);
         player.anims.play("left", true);
@@ -175,14 +203,9 @@ function Game2() {
       } else if (cursors.up.isDown) {
         player.setVelocityY(-100);
         player.anims.play("up", true);
-      } else if (cursors.down.isDown) {
-        player.setVelocityY(100);
-        player.anims.play("down", true);
-      } else if (cursors.shift.isDown) {
-        player.anims.play("attack_down", true);
       } else {
         player.setVelocityX(0);
-        player.setVelocityY(0);
+        player.setVelocityY(130);
         player.anims.play("turn");
       }
     }
