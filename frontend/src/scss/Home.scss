@@ -1,6 +1,6 @@
 @import "./config.scss";
 main {
-  background-color: $navbar-color;
+  background-color: $color-primary;
 }
 .HomeAll {
   width: 100dvw;
@@ -26,7 +26,7 @@ main {
     .textCard {
       width: 48%;
       height: 60%;
-      background-color: rgba($color: $color-light, $alpha: 0.4);
+      background-color: rgba($color: $color-light, $alpha: 0.7);
       border-radius: 5rem;
 
       h1 {
@@ -38,6 +38,7 @@ main {
         p {
           color: $color-secondary;
           opacity: 100%;
+          filter: drop-shadow(0px 0px 12px rgba(black, 1));
         }
       }
       .corpsTextDiv {
@@ -45,6 +46,7 @@ main {
         display: flex;
         justify-content: center;
         color: black;
+        margin-top: 4rem;
 
         p {
           text-align: center;
@@ -64,11 +66,13 @@ main {
           font-style: italic;
           color: black;
           text-align: center;
+          margin-top: 2rem;
         }
         .HomebuttonContainer {
           display: flex;
           justify-content: center;
           gap: 4rem;
+          margin-top: 3rem;
 
           .buttonHome {
             width: 30%;

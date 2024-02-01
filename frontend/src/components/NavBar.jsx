@@ -16,7 +16,7 @@ function NavBar() {
         <NavLink to="/Contact" activeclassname="selected">
           Contact
         </NavLink>
-        <NavLink to="/Game" activeclassname="selected">
+        <NavLink to="/Play" activeclassname="selected">
           Play
         </NavLink>
       </ul>

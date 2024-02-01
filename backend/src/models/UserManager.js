@@ -76,21 +76,13 @@ class UserManager extends AbstractManager {
 
   async checkToken(token) {
     const [user] = await this.database.query(
-      `SELECT *
-             FROM user
-             WHERE token = ?`,
+      `SELECT u.id, u.pseudo, u.name, u.firstname, u.token,s.save
+             FROM user as u
+             left join save as s on u.id = s.user_id
+             WHERE u.token = ?`,
       [token]
     );
-    return user;
-  }
 
-  async takeData(token) {
-    const [user] = await this.database.query(
-      `SELECT nom, prenom, rue, code_postal, ville, email, DATE_FORMAT(anniversaire, "%Y-%m-%d") as anniversaire
-             FROM user
-             WHERE token = ?`,
-      [token]
-    );
     return user;
   }
 

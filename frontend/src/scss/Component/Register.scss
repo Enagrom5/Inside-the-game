@@ -7,12 +7,16 @@ p {
   margin: 0.6rem;
 }
 .register-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-family: $font-secondary;
   width: 50%;
   height: 62%;
   border-radius: 4rem;
   background-color: $color-white;
   backdrop-filter: blur(10px);
+  color: $color-primary;
   .backgroundImageMain {
     display: flex;
     width: 100%;

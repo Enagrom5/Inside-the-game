@@ -50,10 +50,17 @@ function Register() {
         document.getElementById("errorEmail").innerText =
           "Votre Email n'est pas valide";
         document.getElementById("email").classList.add("errorOnPlaceholder");
+      } else if (details.confirmPassword !== details.password) {
+        document.getElementById("errorPassword").innerText =
+          "La confirmation ne match pas avec le mot de passe";
+        document.getElementById("password").classList.add("errorOnPlaceholder");
       } else {
         document.getElementById("errorEmail").innerText = "";
         document.getElementById("errorLog").innerText = "";
         document.getElementById("email").classList.remove("errorOnPlaceholder");
+        document
+          .getElementById("password")
+          .classList.remove("errorOnPlaceholder");
 
         const response = await axios.post(
           `${import.meta.env.VITE_BACKEND_URL}/api/users`,
@@ -70,7 +77,7 @@ function Register() {
         console.info(response);
         document.getElementById("successLog").innerText =
           "Inscription en cours...";
-        localStorage.setItem("UserToken", response.data.token);
+
         setTimeout(() => {
           window.location.href = "/";
         }, 1000);
@@ -165,7 +172,7 @@ function Register() {
               minLength="8"
               type="password"
               placeholder="********"
-              autoComplete="true"
+              autoComplete="off"
               aria-current="true"
               required
             />
@@ -189,15 +196,9 @@ function Register() {
           </div>
           <p className="error_container" id="errorEmail" />
           <p className="error_container" id="errorLog" />
+          <p className="error_container" id="errorPassword" />
           <p className="success_container" id="successLog" />
         </form>
-        {details.confirmPassword !== details.password ? (
-          <div className="errorOnPlaceholder">
-            Le mot de passe de confirmation ne match pas
-          </div>
-        ) : (
-          <p />
-        )}
       </div>
     </div>
   );
