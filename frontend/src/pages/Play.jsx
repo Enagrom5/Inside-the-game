@@ -26,7 +26,7 @@ function Play() {
   const [userId, setUserId] = useState("");
   const [save, setSave] = useState(1);
   // eslint-disable-next-line no-unused-vars
-  const [score, setScore] = useState(1000);
+  const [score, setScore] = useState(0);
   // vérifie qu'on est bien connecter pour modifier l'affichage de la page en fonction
 
   useEffect(() => {
@@ -76,7 +76,7 @@ function Play() {
   const changeLevel = () => {
     setSave((prev) => prev + 1);
   };
-  console.info(save);
+
   // si on n'est pas connecté on est invité à le faire
 
   if (!isLoggedIn) {
@@ -144,11 +144,12 @@ function Play() {
             <p>Attaquer</p>
           </div>
         </div>
-        {save === 1 ? <Game1 /> : <p />}
-        {save === 2 ? <Game2 /> : <p />}
-        {save === 3 ? <Game3 /> : <p />}
-        {save === 4 ? <Game4 /> : <p />}
+        {save === 1 ? <Game1 setScore={setScore} /> : <p />}
+        {save === 2 ? <Game2 setScore={setScore} /> : <p />}
+        {save === 3 ? <Game3 setScore={setScore} /> : <p />}
+        {save === 4 ? <Game4 setScore={setScore} /> : <p />}
         <div className="nextButton">
+          <p>Score : {score}</p>
           {score < 1000 ? (
             <button type="button" disabled="disabled">
               Niveau suivant

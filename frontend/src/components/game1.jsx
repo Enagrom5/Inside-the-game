@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-alert */
 /* eslint-disable react/no-this-in-sfc */
 /* eslint-disable no-use-before-define */
 /* eslint-disable object-shorthand */
@@ -6,8 +8,11 @@ import Phaser from "phaser";
 import firstmap from "../assets/TileMaps/Firstmap.json";
 import anthony from "../assets/Tiles/Puny-Characters/Puny-Characters/Character-Base.png";
 import RPG12 from "../assets/Tiles/RPG 12x12/First Asset pack.png";
+import Chest from "../assets/Tiles/0x72_DungeonTilesetII_v1.6/0x72_DungeonTilesetII_v1.6/frames/chest_empty_open_anim_f0.png";
+import ChestOpen from "../assets/Tiles/0x72_DungeonTilesetII_v1.6/0x72_DungeonTilesetII_v1.6/frames/chest_empty_open_anim_f2.png";
+import orc from "../assets/Tiles/Puny-Characters/Puny-Characters/Orc-Soldier-Cyan.png";
 
-function Game1() {
+function Game1({ setScore }) {
   useEffect(() => {
     const gameConfig = {
       type: Phaser.AUTO,
@@ -30,14 +35,20 @@ function Game1() {
         frameWidth: 32,
         frameHeight: 32,
       });
+      this.load.image("chest", Chest);
+      this.load.image("chest_open", ChestOpen);
+      this.load.spritesheet("orc", orc, {
+        frameWidth: 32,
+        frameHeight: 32,
+      });
     }
     const game = new Phaser.Game(gameConfig);
     // let platforms;
     let player;
-    // let stars;
-    // let score = 0;
-    // let scoreText;
-    // let gameOver = false;
+    let chest;
+    let ennemi;
+    let allEnnemi;
+    let gameOver = false;
     // let bombs;
 
     function create() {
@@ -55,10 +66,16 @@ function Game1() {
       const boat = map.createLayer("bateau", allLayer, 0, 0);
       const tree = map.createLayer("Calque de Tuiles 5", allLayer, 0, 0);
       const rest = map.createLayer("Calque de Tuiles 4", allLayer, 0, 0);
-      console.info(earth, boat, tree, rest, water);
+      console.info(earth, boat, rest);
+      chest = this.physics.add.staticGroup();
+      chest.create(75, 75, "chest");
+
+      // CREATION DU JOUEUR
 
       player = this.physics.add.sprite(199, 100, "anthony");
-      console.info(player);
+      player.setCollideWorldBounds(true);
+      // AJOUT DE SES DEPLACEMENTS
+
       this.anims.create({
         key: "left",
         frames: this.anims.generateFrameNumbers("anthony", {
@@ -138,9 +155,95 @@ function Game1() {
         frameRate: 25,
         repeat: -1,
       });
+      this.anims.create({
+        key: "death",
+        frames: this.anims.generateFrameNumbers("anthony", {
+          start: 18,
+          end: 23,
+        }),
+        frameRate: 25,
+        repeat: -1,
+      });
+
+      // AJOUT D'UN ENNEMI
+      allEnnemi = this.physics.add.group({
+        immovable: false,
+        key: "orc",
+        repeat: 6,
+      });
+      ennemi = this.physics.add.sprite(10, 100, "orc");
+      ennemi.setCollideWorldBounds(true);
+
+      // DEPLACEMENT DE L'ENNEMI
+
+      this.anims.create({
+        key: "ennemi_left",
+        frames: this.anims.generateFrameNumbers("orc", {
+          start: 145,
+          end: 148,
+        }),
+        frameRate: 10,
+        repeat: -1,
+      });
+
+      this.anims.create({
+        key: "ennemi_turn",
+        frames: [{ key: "orc", frame: 1 }],
+        frameRate: 20,
+      });
+
+      this.anims.create({
+        key: "ennemi_right",
+        frames: this.anims.generateFrameNumbers("orc", {
+          start: 48,
+          end: 51,
+        }),
+        frameRate: 10,
+        repeat: -1,
+      });
+      this.anims.create({
+        key: "ennemi_up",
+        frames: this.anims.generateFrameNumbers("orc", {
+          start: 97,
+          end: 99,
+        }),
+        frameRate: 10,
+        repeat: -1,
+      });
+      this.anims.create({
+        key: "ennemi_down",
+        frames: this.anims.generateFrameNumbers("orc", {
+          start: 1,
+          end: 3,
+        }),
+        frameRate: 10,
+        repeat: -1,
+      });
+      allEnnemi.add(ennemi);
+
+      water.setCollisionBetween(368, 428);
+      tree.setCollisionBetween(257, 357);
 
       this.physics.add.collider(player, water);
-      water.setCollisionBetween(368, 428);
+      this.physics.add.collider(player, tree);
+
+      function hitEnnemi() {
+        this.physics.pause();
+        player.anims.play("death");
+        player.setTint(0xff0000);
+        gameOver = "gameOver";
+        alert(gameOver);
+      }
+
+      function win() {
+        setScore((prev) => prev + 1000);
+        chest.setTexture("chest_open");
+      }
+
+      this.physics.add.collider(ennemi, player);
+      this.physics.add.overlap(player, ennemi, hitEnnemi, null, this);
+
+      this.physics.add.overlap(chest, player, win, null, this);
 
       // this.add.image(400, 300, "sky");
       // platforms = this.physics.add.staticGroup();
