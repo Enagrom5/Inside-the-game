@@ -75,6 +75,7 @@ function Play() {
 
   const changeLevel = () => {
     setSave((prev) => prev + 1);
+    setScore(0);
   };
 
   // si on n'est pas connecté on est invité à le faire

@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-alert */
 /* eslint-disable react/no-this-in-sfc */
@@ -6,11 +7,11 @@
 import { useEffect } from "react";
 import Phaser from "phaser";
 import firstmap from "../assets/TileMaps/Firstmap.json";
-import anthony from "../assets/Tiles/Puny-Characters/Puny-Characters/Character-Base.png";
+import face from "../assets/Tiles/Puny-Characters/Puny-Characters/charater_face.png";
 import RPG12 from "../assets/Tiles/RPG 12x12/First Asset pack.png";
 import Chest from "../assets/Tiles/0x72_DungeonTilesetII_v1.6/0x72_DungeonTilesetII_v1.6/frames/chest_empty_open_anim_f0.png";
 import ChestOpen from "../assets/Tiles/0x72_DungeonTilesetII_v1.6/0x72_DungeonTilesetII_v1.6/frames/chest_empty_open_anim_f2.png";
-import orc from "../assets/Tiles/Puny-Characters/Puny-Characters/Orc-Soldier-Cyan.png";
+import orc from "../assets/Tiles/Puny-Characters/Puny-Characters/orc.png";
 
 function Game1({ setScore }) {
   useEffect(() => {
@@ -31,23 +32,24 @@ function Game1({ setScore }) {
     function preload() {
       this.load.image("First Asset pack", RPG12);
       this.load.tilemapTiledJSON("map", firstmap);
-      this.load.spritesheet("anthony", anthony, {
-        frameWidth: 32,
-        frameHeight: 32,
+      this.load.spritesheet("anthoface", face, {
+        frameWidth: 16,
+        frameHeight: 16,
       });
+
       this.load.image("chest", Chest);
       this.load.image("chest_open", ChestOpen);
       this.load.spritesheet("orc", orc, {
-        frameWidth: 32,
-        frameHeight: 32,
+        frameWidth: 20,
+        frameHeight: 24,
       });
     }
     const game = new Phaser.Game(gameConfig);
     // let platforms;
     let player;
-    let chest;
     let ennemi;
     let allEnnemi;
+    let chest;
     let gameOver = false;
     // let bombs;
 
@@ -72,15 +74,15 @@ function Game1({ setScore }) {
 
       // CREATION DU JOUEUR
 
-      player = this.physics.add.sprite(199, 100, "anthony");
+      player = this.physics.add.sprite(199, 100, "anthoface");
       player.setCollideWorldBounds(true);
       // AJOUT DE SES DEPLACEMENTS
 
       this.anims.create({
         key: "left",
-        frames: this.anims.generateFrameNumbers("anthony", {
-          start: 145,
-          end: 148,
+        frames: this.anims.generateFrameNumbers("anthoface", {
+          start: 24,
+          end: 27,
         }),
         frameRate: 10,
         repeat: -1,
@@ -88,31 +90,31 @@ function Game1({ setScore }) {
 
       this.anims.create({
         key: "turn",
-        frames: [{ key: "anthony", frame: 1 }],
+        frames: [{ key: "anthoface", frame: 1 }],
         frameRate: 20,
       });
 
       this.anims.create({
         key: "right",
-        frames: this.anims.generateFrameNumbers("anthony", {
-          start: 48,
-          end: 51,
+        frames: this.anims.generateFrameNumbers("anthoface", {
+          start: 8,
+          end: 11,
         }),
         frameRate: 10,
         repeat: -1,
       });
       this.anims.create({
         key: "up",
-        frames: this.anims.generateFrameNumbers("anthony", {
-          start: 97,
-          end: 99,
+        frames: this.anims.generateFrameNumbers("anthoface", {
+          start: 16,
+          end: 19,
         }),
         frameRate: 10,
         repeat: -1,
       });
       this.anims.create({
         key: "down",
-        frames: this.anims.generateFrameNumbers("anthony", {
+        frames: this.anims.generateFrameNumbers("anthoface", {
           start: 1,
           end: 3,
         }),
@@ -121,8 +123,8 @@ function Game1({ setScore }) {
       });
       this.anims.create({
         key: "attack_down",
-        frames: this.anims.generateFrameNumbers("anthony", {
-          start: 5,
+        frames: this.anims.generateFrameNumbers("anthoface", {
+          start: 4,
           end: 7,
         }),
         frameRate: 25,
@@ -130,202 +132,158 @@ function Game1({ setScore }) {
       });
       this.anims.create({
         key: "attack_up",
-        frames: this.anims.generateFrameNumbers("anthony", {
-          start: 102,
-          end: 104,
+        frames: this.anims.generateFrameNumbers("anthoface", {
+          start: 20,
+          end: 23,
         }),
         frameRate: 25,
         repeat: -1,
       });
       this.anims.create({
         key: "attack_left",
-        frames: this.anims.generateFrameNumbers("anthony", {
-          start: 149,
-          end: 151,
+        frames: this.anims.generateFrameNumbers("anthoface", {
+          start: 28,
+          end: 31,
         }),
         frameRate: 25,
         repeat: -1,
       });
       this.anims.create({
         key: "attack_right",
-        frames: this.anims.generateFrameNumbers("anthony", {
-          start: 53,
-          end: 55,
-        }),
-        frameRate: 25,
-        repeat: -1,
-      });
-      this.anims.create({
-        key: "death",
-        frames: this.anims.generateFrameNumbers("anthony", {
-          start: 18,
-          end: 23,
+        frames: this.anims.generateFrameNumbers("anthoface", {
+          start: 12,
+          end: 15,
         }),
         frameRate: 25,
         repeat: -1,
       });
 
       // AJOUT D'UN ENNEMI
-      allEnnemi = this.physics.add.group({
-        immovable: false,
-        key: "orc",
-        repeat: 6,
-      });
-      ennemi = this.physics.add.sprite(10, 100, "orc");
-      ennemi.setCollideWorldBounds(true);
+      allEnnemi = this.physics.add.group();
 
-      // DEPLACEMENT DE L'ENNEMI
+      const listOfEnnemi = [
+        { x: 10, y: 30 },
+        { x: 139, y: 48 },
+        { x: 155, y: 122 },
+        { x: 100, y: 150 },
+        { x: 50, y: 180 },
+        { x: 130, y: 20 },
+      ];
 
-      this.anims.create({
-        key: "ennemi_left",
-        frames: this.anims.generateFrameNumbers("orc", {
-          start: 145,
-          end: 148,
-        }),
-        frameRate: 10,
-        repeat: -1,
-      });
+      for (let i = 0; i < 6; i += 1) {
+        ennemi = allEnnemi.create(listOfEnnemi[i].x, listOfEnnemi[i].y, "orc");
+        ennemi.setCollideWorldBounds(true);
+        this.physics.add.collider(ennemi, water);
+        this.physics.add.collider(ennemi, ennemi);
+      }
 
-      this.anims.create({
-        key: "ennemi_turn",
-        frames: [{ key: "orc", frame: 1 }],
-        frameRate: 20,
-      });
+      // DEPLACEMENT DE L'ENNEMI avec animation mais pour le moment je n'arrivepas à la faire
 
-      this.anims.create({
-        key: "ennemi_right",
-        frames: this.anims.generateFrameNumbers("orc", {
-          start: 48,
-          end: 51,
-        }),
-        frameRate: 10,
-        repeat: -1,
-      });
-      this.anims.create({
-        key: "ennemi_up",
-        frames: this.anims.generateFrameNumbers("orc", {
-          start: 97,
-          end: 99,
-        }),
-        frameRate: 10,
-        repeat: -1,
-      });
-      this.anims.create({
-        key: "ennemi_down",
-        frames: this.anims.generateFrameNumbers("orc", {
-          start: 1,
-          end: 3,
-        }),
-        frameRate: 10,
-        repeat: -1,
-      });
-      allEnnemi.add(ennemi);
+      // this.anims.create({
+      //   key: "ennemi_left",
+      //   frames: this.anims.generateFrameNumbers("orc", {
+      //     start: 10,
+      //     end: 13,
+      //   }),
+      //   frameRate: 10,
+      //   repeat: -1,
+      // });
+
+      // this.anims.create({
+      //   key: "ennemi_turn",
+      //   frames: [{ key: "orc", frame: 0 }],
+      //   frameRate: 20,
+      // });
+
+      // this.anims.create({
+      //   key: "ennemi_right",
+      //   frames: this.anims.generateFrameNumbers("orc", {
+      //     start: 4,
+      //     end: 7,
+      //   }),
+      //   frameRate: 10,
+      //   repeat: -1,
+      // });
+      // this.anims.create({
+      //   key: "ennemi_up",
+      //   frames: this.anims.generateFrameNumbers("orc", {
+      //     start: 8,
+      //     end: 11,
+      //   }),
+      //   frameRate: 10,
+      //   repeat: -1,
+      // });
+      // this.anims.create({
+      //   key: "ennemi_down",
+      //   frames: this.anims.generateFrameNumbers("orc", {
+      //     start: 0,
+      //     end: 3,
+      //   }),
+      //   frameRate: 10,
+      //   repeat: -1,
+      // });
 
       water.setCollisionBetween(368, 428);
       tree.setCollisionBetween(257, 357);
 
       this.physics.add.collider(player, water);
-      this.physics.add.collider(player, tree);
 
+      function win() {
+        setScore((prev) => prev + 1000);
+        this.physics.pause();
+      }
+
+      this.physics.add.overlap(chest, player, win, null, this);
       function hitEnnemi() {
         this.physics.pause();
-        player.anims.play("death");
+        player.anims.play("turn");
         player.setTint(0xff0000);
         gameOver = "gameOver";
         alert(gameOver);
       }
-
-      function win() {
-        setScore((prev) => prev + 1000);
-        chest.setTexture("chest_open");
-      }
-
-      this.physics.add.collider(ennemi, player);
-      this.physics.add.overlap(player, ennemi, hitEnnemi, null, this);
-
-      this.physics.add.overlap(chest, player, win, null, this);
-
-      // this.add.image(400, 300, "sky");
-      // platforms = this.physics.add.staticGroup();
-      // platforms.create(400, 568, "ground").setScale(2).refreshBody();
-      // platforms.create(600, 400, "ground");
-      // platforms.create(50, 250, "ground");
-      // platforms.create(750, 220, "ground");
-      // player = this.physics.add.sprite(100, 500, "dude");
-      // player.setBounce(0.2);
-      // player.setCollideWorldBounds(true);
-      // this.anims.create({
-      //   key: "left",
-      //   frames: this.anims.generateFrameNumbers("dude", { start: 0, end: 3 }),
-      //   frameRate: 10,
-      //   repeat: -1,
-      // });
-      // this.anims.create({
-      //   key: "turn",
-      //   frames: [{ key: "dude", frame: 4 }],
-      //   frameRate: 20,
-      // });
-      // this.anims.create({
-      //   key: "right",
-      //   frames: this.anims.generateFrameNumbers("dude", { start: 5, end: 8 }),
-      //   frameRate: 10,
-      //   repeat: -1,
-      // });
-      // this.physics.add.collider(player, platforms);
-      // stars = this.physics.add.group({
-      //   key: "star",
-      //   repeat: 11,
-      //   setXY: { x: 12, y: 0, stepX: 70 },
-      // });
-      // stars.children.iterate(function (child) {
-      //   child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
-      // });
-      // this.physics.add.collider(stars, platforms);
-      // function collectStar() {
-      //   star.disableBody(true, true);
-      //   score += 10;
-      //   scoreText.setText(`Score: ${score}`);
-      //   if (stars.countActive(true) === 0) {
-      //     stars.children.iterate(function (child) {
-      //       child.enableBody(true, child.x, 0, true, true);
-      //     });
-      //     const x =
-      //       player.x < 400
-      //         ? Phaser.Math.Between(400, 800)
-      //         : Phaser.Math.Between(0, 400);
-      //     const bomb = bombs.create(x, 16, "bomb");
-      //     bomb.setBounce(1);
-      //     bomb.setCollideWorldBounds(true);
-      //     bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
-      //   }
-      // }
-      // function hitBomb() {
-      //   this.physics.pause();
-      //   player.setTint(0xff0000);
-      //   player.anims.play("turn");
-      //   gameOver = true;
-      // }
-      // this.physics.add.overlap(player, stars, collectStar, null, this);
-      // scoreText = this.add.text(16, 16, "score: 0", {
-      //   fontSize: "32px",
-      //   fill: "#000",
-      // });
-      // bombs = this.physics.add.group();
-      // this.physics.add.collider(bombs, platforms);
-      // this.physics.add.collider(player, bombs, hitBomb, null, this);
+      this.physics.add.overlap(player, allEnnemi, hitEnnemi, null, this);
     }
 
     let cursors;
     function update() {
       cursors = this.input.keyboard.createCursorKeys();
+
       if (cursors.shift.isDown && cursors.down.isDown) {
         player.anims.play("attack_down", true);
+        this.physics.add.overlap(
+          player,
+          allEnnemi,
+
+          null,
+          this
+        );
       } else if (cursors.shift.isDown && cursors.up.isDown) {
         player.anims.play("attack_up", true);
+        this.physics.add.overlap(
+          player,
+          allEnnemi,
+
+          null,
+          this
+        );
       } else if (cursors.shift.isDown && cursors.left.isDown) {
         player.anims.play("attack_left", true);
+        this.physics.add.overlap(
+          player,
+          allEnnemi,
+
+          null,
+          this
+        );
       } else if (cursors.shift.isDown && cursors.right.isDown) {
         player.anims.play("attack_right", true);
+        this.physics.add.overlap(
+          player,
+          allEnnemi,
+
+          null,
+          this
+        );
       } else if (cursors.left.isDown) {
         player.setVelocityX(-100);
         player.anims.play("left", true);
@@ -344,6 +302,18 @@ function Game1({ setScore }) {
         player.setVelocityX(0);
         player.setVelocityY(0);
         player.anims.play("turn");
+
+        const random = Math.round(Math.random());
+
+        allEnnemi.children.iterate(function (child) {
+          const vitesseX = Phaser.Math.Between(-100, 100); // Vitesse horizontale aléatoire
+          const vitesseY = Phaser.Math.Between(-100, 100); // Vitesse verticale aléatoire
+          if (random === 0) {
+            child.setVelocityX(vitesseX);
+          } else {
+            child.setVelocityY(vitesseY);
+          }
+        });
       }
     }
     return () => {

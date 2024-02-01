@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react/no-this-in-sfc */
 /* eslint-disable no-use-before-define */
 /* eslint-disable object-shorthand */
@@ -11,9 +12,11 @@ import props from "../assets/Tiles/Pixel Art Top Down - Basic/Texture/TXProps.pn
 import struct from "../assets/Tiles/Pixel Art Top Down - Basic/Texture/TXStruct.png";
 import wall from "../assets/Tiles/Pixel Art Top Down - Basic/Texture/TXTilesetWall.png";
 import shadow from "../assets/Tiles/Pixel Art Top Down - Basic/Texture/TXShadow.png";
-import anthony from "../assets/Tiles/Puny-Characters/Puny-Characters/Character-Base.png";
+import face from "../assets/Tiles/Puny-Characters/Puny-Characters/charater_face.png";
+import Chest from "../assets/Tiles/0x72_DungeonTilesetII_v1.6/0x72_DungeonTilesetII_v1.6/frames/chest_empty_open_anim_f0.png";
+import ChestOpen from "../assets/Tiles/0x72_DungeonTilesetII_v1.6/0x72_DungeonTilesetII_v1.6/frames/chest_empty_open_anim_f2.png";
 
-function Game3() {
+function Game3({ setScore }) {
   useEffect(() => {
     const gameConfig = {
       type: Phaser.AUTO,
@@ -37,15 +40,19 @@ function Game3() {
       this.load.image("TX Struct", struct);
       this.load.image("TX Tileset Wall", wall);
       this.load.image("TX Shadow", shadow);
-      this.load.spritesheet("anthony", anthony, {
-        frameWidth: 32,
-        frameHeight: 32,
+      this.load.spritesheet("anthoface", face, {
+        frameWidth: 16,
+        frameHeight: 16,
       });
+      this.load.image("chest", Chest);
+      this.load.image("chest_open", ChestOpen);
       this.load.tilemapTiledJSON("map", thirdmap);
     }
     const game = new Phaser.Game(gameConfig);
 
     let player;
+    let chest;
+    // let gameOver = false;
 
     function create() {
       const map = this.make.tilemap({
@@ -73,15 +80,18 @@ function Game3() {
       const statut = map.createLayer("Calque de Tuiles 3", allLayer, 0, 0);
       console.info(sol, ombre, mur, statut);
 
-      player = this.physics.add.sprite(199, 100, "anthony");
+      chest = this.physics.add.staticGroup();
+      chest.create(208, 110, "chest");
+
+      player = this.physics.add.sprite(540, 800, "anthoface");
       player.setCollideWorldBounds(true);
       // AJOUT DE SES DEPLACEMENTS
 
       this.anims.create({
         key: "left",
-        frames: this.anims.generateFrameNumbers("anthony", {
-          start: 145,
-          end: 148,
+        frames: this.anims.generateFrameNumbers("anthoface", {
+          start: 24,
+          end: 27,
         }),
         frameRate: 10,
         repeat: -1,
@@ -89,31 +99,31 @@ function Game3() {
 
       this.anims.create({
         key: "turn",
-        frames: [{ key: "anthony", frame: 1 }],
+        frames: [{ key: "anthoface", frame: 1 }],
         frameRate: 20,
       });
 
       this.anims.create({
         key: "right",
-        frames: this.anims.generateFrameNumbers("anthony", {
-          start: 48,
-          end: 51,
+        frames: this.anims.generateFrameNumbers("anthoface", {
+          start: 8,
+          end: 11,
         }),
         frameRate: 10,
         repeat: -1,
       });
       this.anims.create({
         key: "up",
-        frames: this.anims.generateFrameNumbers("anthony", {
-          start: 97,
-          end: 99,
+        frames: this.anims.generateFrameNumbers("anthoface", {
+          start: 16,
+          end: 19,
         }),
         frameRate: 10,
         repeat: -1,
       });
       this.anims.create({
         key: "down",
-        frames: this.anims.generateFrameNumbers("anthony", {
+        frames: this.anims.generateFrameNumbers("anthoface", {
           start: 1,
           end: 3,
         }),
@@ -122,8 +132,8 @@ function Game3() {
       });
       this.anims.create({
         key: "attack_down",
-        frames: this.anims.generateFrameNumbers("anthony", {
-          start: 5,
+        frames: this.anims.generateFrameNumbers("anthoface", {
+          start: 4,
           end: 7,
         }),
         frameRate: 25,
@@ -131,31 +141,46 @@ function Game3() {
       });
       this.anims.create({
         key: "attack_up",
-        frames: this.anims.generateFrameNumbers("anthony", {
-          start: 102,
-          end: 104,
+        frames: this.anims.generateFrameNumbers("anthoface", {
+          start: 20,
+          end: 23,
         }),
         frameRate: 25,
         repeat: -1,
       });
       this.anims.create({
         key: "attack_left",
-        frames: this.anims.generateFrameNumbers("anthony", {
-          start: 149,
-          end: 151,
+        frames: this.anims.generateFrameNumbers("anthoface", {
+          start: 28,
+          end: 31,
         }),
         frameRate: 25,
         repeat: -1,
       });
       this.anims.create({
         key: "attack_right",
-        frames: this.anims.generateFrameNumbers("anthony", {
-          start: 53,
-          end: 55,
+        frames: this.anims.generateFrameNumbers("anthoface", {
+          start: 12,
+          end: 15,
         }),
         frameRate: 25,
         repeat: -1,
       });
+
+      // function hitEnnemi() {
+      //   this.physics.pause();
+      //   player.anims.play("turn");
+      //   player.setTint(0xff0000);
+      //   gameOver = "gameOver";
+      //   alert(gameOver);
+      // }
+
+      function win() {
+        setScore((prev) => prev + 1000);
+        this.physics.pause();
+      }
+
+      this.physics.add.overlap(chest, player, win, null, this);
     }
 
     let cursors;
