@@ -34,10 +34,11 @@ const read = async (req, res, next) => {
 const add = async (req, res, next) => {
   // Extract the item data from the request body
   const user = req.body;
-  console.info(user);
+
   try {
     // Insert the item into the database
     const insertId = await tables.user.create(user);
+    await tables.save.create(1, insertId);
 
     // Respond with HTTP 201 (Created) and the ID of the newly inserted item
     res.status(201).json({ insertId });
@@ -122,6 +123,7 @@ const checktoken = async (req, res, next) => {
         res.status(200).send({
           message: "OK",
           id: userId,
+          save: checkUserToken[0].save,
         });
       } else res.status(200).send({ message: "Error" });
     } catch (err) {

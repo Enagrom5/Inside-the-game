@@ -67,6 +67,18 @@ body {
         height: 60%;
         width: 45%;
       }
+      .nextButton {
+        position: fixed;
+        right: 5%;
+        bottom: 35%;
+
+        button {
+          height: 2rem;
+          width: 10rem;
+          background-color: $color-white;
+          border: none;
+        }
+      }
     }
   }
 }

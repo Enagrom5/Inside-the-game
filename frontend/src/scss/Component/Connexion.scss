@@ -1,6 +1,9 @@
 @import "../config.scss";
 
 .connexion-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-family: $font-secondary;
   width: 50%;
   height: 62%;

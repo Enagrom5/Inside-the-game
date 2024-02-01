@@ -1,8 +1,12 @@
 /* eslint-disable no-unused-expressions */
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Lottie from "react-lottie-player";
-import Game from "../components/game";
+import Game1 from "../components/game1";
+import Game2 from "../components/game2";
+import Game3 from "../components/game3";
+import Game4 from "../components/game4";
 import bas from "../assets/bas.svg";
 import haut from "../assets/haut.svg";
 import gauche from "../assets/gauche.svg";
@@ -14,11 +18,16 @@ import progress2 from "../assets/progress2.png";
 import progress3 from "../assets/progress3.png";
 import progress4 from "../assets/progress4.png";
 import mailError from "../assets/EmailError.json";
+import "../scss/Component/Game.scss";
 
 function Play() {
   const [/* isLoading */ setIsLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userId, setUserId] = useState("");
+  const [save, setSave] = useState(1);
+  // eslint-disable-next-line no-unused-vars
+  const [score, setScore] = useState(0);
+  // vérifie qu'on est bien connecter pour modifier l'affichage de la page en fonction
 
   useEffect(() => {
     axios
@@ -26,26 +35,49 @@ function Play() {
         withCredentials: true,
       })
       .then((res) => {
-        console.info(res.data.message);
         if (res.data.message === "OK") {
           setIsLoggedIn(true);
           setUserId(res.data.id);
+          setSave(res.data.save);
         } else {
           setIsLoggedIn(false);
           setTimeout(() => {
             window.location.href = "/";
-          }, 3800);
+          }, 1500);
         }
         setIsLoading(false);
       });
   }, []);
-  const save = 1;
+  // eslint-disable-next-line no-unused-vars
+
   let progress;
-  console.info(userId);
+
+  // permet in affichage intéractif de la map en fonction du niveau ou on est
+
   save === 1 ? (progress = progress1) : null;
   save === 2 ? (progress = progress2) : null;
   save === 3 ? (progress = progress3) : null;
   save === 4 ? (progress = progress4) : null;
+
+  // envoi dans le back la progression pour que ce soit mis à jour dans la db
+
+  const saveProgress = () => {
+    axios
+      .put(
+        `${import.meta.env.VITE_BACKEND_URL}/api/saves`,
+        { userId, save },
+        {
+          withCredentials: true,
+        }
+      )
+      .catch((err) => console.error(err));
+  };
+
+  const changeLevel = () => {
+    setSave((prev) => prev + 1);
+  };
+
+  // si on n'est pas connecté on est invité à le faire
 
   if (!isLoggedIn) {
     return (
@@ -63,11 +95,15 @@ function Play() {
         Vous devez vous connecter pour acceder à cette page.  `}
             <br /> {` Vous allez être redirigé(e) vers la page de connexion. `}
           </p>
-          <button type="button">Se connecter</button>
+          <Link to="/">
+            <button type="button">Se connecter</button>
+          </Link>
         </div>
       </section>
     );
   }
+  // si on est connecté on peut jouer
+
   return (
     <div className="play_container">
       <div className="Button_container">
@@ -76,7 +112,9 @@ function Play() {
           pourras suivre ma progression sur la map
         </p>
         <img className="progress" src={progress} alt="progress" />
-        <button type="button">Sauvegarde</button>
+        <button type="button" onClick={saveProgress}>
+          Sauvegarde
+        </button>
       </div>
       <div className="play_container_instruction">
         <div className="screenLeft">
@@ -106,7 +144,22 @@ function Play() {
             <p>Attaquer</p>
           </div>
         </div>
-        <Game />
+        {save === 1 ? <Game1 setScore={setScore} /> : <p />}
+        {save === 2 ? <Game2 setScore={setScore} /> : <p />}
+        {save === 3 ? <Game3 setScore={setScore} /> : <p />}
+        {save === 4 ? <Game4 setScore={setScore} /> : <p />}
+        <div className="nextButton">
+          <p>Score : {score}</p>
+          {score < 1000 ? (
+            <button type="button" disabled="disabled">
+              Niveau suivant
+            </button>
+          ) : (
+            <button type="button" onClick={changeLevel}>
+              Niveau suivant
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
