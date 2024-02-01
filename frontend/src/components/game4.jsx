@@ -75,7 +75,7 @@ function Game({ setScore }) {
       chest = this.physics.add.staticGroup();
       chest.create(158, 158, "chest");
 
-      player = this.physics.add.sprite(199, 100, "anthoface");
+      player = this.physics.add.sprite(38, 5, "anthoface");
       player.setCollideWorldBounds(true);
       // AJOUT DE SES DEPLACEMENTS
 
@@ -158,6 +158,8 @@ function Game({ setScore }) {
         frameRate: 25,
         repeat: -1,
       });
+
+      this.physics.add.collider(player, Ground);
     }
     let cursors;
     function update() {

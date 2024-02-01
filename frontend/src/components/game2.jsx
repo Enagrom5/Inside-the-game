@@ -23,7 +23,7 @@ function Game2({ setScore }) {
       physics: {
         default: "arcade",
         arcade: {
-          gravity: { y: 300 },
+          gravity: { y: 1000 },
         },
       },
       parent: "phaserContainer",
@@ -77,7 +77,7 @@ function Game2({ setScore }) {
       chest = this.physics.add.staticGroup();
       chest.create(300, 22, "chest");
 
-      player = this.physics.add.sprite(300, 20, "anthoface");
+      player = this.physics.add.sprite(20, 230, "anthoface");
       player.setCollideWorldBounds(true);
       // AJOUT DE SES DEPLACEMENTS
 
@@ -161,32 +161,39 @@ function Game2({ setScore }) {
         repeat: -1,
       });
 
-      // function hitEnnemi() {
-      //   this.physics.pause();
-      //   player.anims.play("turn");
-      //   player.setTint(0xff0000);
-      //   gameOver = "gameOver";
-      //   alert(gameOver);
-      // }
-
       function win() {
         setScore((prev) => prev + 1000);
         this.physics.pause();
       }
 
       this.physics.add.overlap(chest, player, win, null, this);
+      this.physics.add.collider(player, forest);
+      this.physics.add.collider(player, water);
+
+      forest.setCollisionBetween(25, 30);
+      water.setCollisionBetween(25, 29);
+      forest.setCollisionBetween(385, 388);
+      water.setCollisionBetween(155, 157);
+      forest.setCollisionBetween(155, 157);
+      water.setCollisionBetween(385, 388);
+      forest.setCollisionBetween(31, 55);
+      forest.setCollisionBetween(285, 289);
     }
     let cursors;
     function update() {
       cursors = this.input.keyboard.createCursorKeys();
-      if (cursors.shift.isDown && cursors.down.isDown) {
-        player.anims.play("attack_down", true);
-      } else if (cursors.shift.isDown && cursors.up.isDown) {
-        player.anims.play("attack_up", true);
-      } else if (cursors.shift.isDown && cursors.left.isDown) {
-        player.anims.play("attack_left", true);
-      } else if (cursors.shift.isDown && cursors.right.isDown) {
-        player.anims.play("attack_right", true);
+
+      if (cursors.space.isDown && cursors.up.isDown) {
+        player.anims.play("up", true);
+        player.setVelocityY(-130);
+      } else if (cursors.space.isDown && cursors.left.isDown) {
+        player.anims.play("left", true);
+        player.setVelocityY(-130);
+        player.setVelocityX(-160);
+      } else if (cursors.space.isDown && cursors.right.isDown) {
+        player.anims.play("right", true);
+        player.setVelocityY(-130);
+        player.setVelocityX(160);
       } else if (cursors.left.isDown) {
         player.setVelocityX(-100);
         player.anims.play("left", true);
@@ -196,14 +203,9 @@ function Game2({ setScore }) {
       } else if (cursors.up.isDown) {
         player.setVelocityY(-100);
         player.anims.play("up", true);
-      } else if (cursors.down.isDown) {
-        player.setVelocityY(100);
-        player.anims.play("down", true);
-      } else if (cursors.shift.isDown) {
-        player.anims.play("attack_down", true);
       } else {
         player.setVelocityX(0);
-        player.setVelocityY(0);
+        player.setVelocityY(130);
         player.anims.play("turn");
       }
     }
