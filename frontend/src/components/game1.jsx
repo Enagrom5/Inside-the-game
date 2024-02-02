@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-unused-expressions */
 /* eslint-disable func-names */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-alert */
@@ -40,7 +42,7 @@ function Game1({ setScore }) {
       this.load.image("chest", Chest);
       this.load.image("chest_open", ChestOpen);
       this.load.spritesheet("orc", orc, {
-        frameWidth: 20,
+        frameWidth: 18,
         frameHeight: 24,
       });
     }
@@ -304,14 +306,18 @@ function Game1({ setScore }) {
         player.anims.play("turn");
 
         const random = Math.round(Math.random());
-
+        const acceleration = 10;
         allEnnemi.children.iterate(function (child) {
           const vitesseX = Phaser.Math.Between(-100, 100); // Vitesse horizontale aléatoire
           const vitesseY = Phaser.Math.Between(-100, 100); // Vitesse verticale aléatoire
           if (random === 0) {
-            child.setVelocityX(vitesseX);
+            child.body.velocity.x < vitesseX
+              ? (child.body.velocity.x += acceleration)
+              : (child.body.velocity.x -= acceleration);
           } else {
-            child.setVelocityY(vitesseY);
+            child.body.velocity.y < vitesseY
+              ? (child.body.velocity.y += acceleration)
+              : (child.body.velocity.y -= acceleration);
           }
         });
       }

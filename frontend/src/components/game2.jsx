@@ -200,9 +200,6 @@ function Game2({ setScore }) {
       } else if (cursors.right.isDown) {
         player.setVelocityX(100);
         player.anims.play("right", true);
-      } else if (cursors.up.isDown) {
-        player.setVelocityY(-100);
-        player.anims.play("up", true);
       } else {
         player.setVelocityX(0);
         player.setVelocityY(130);

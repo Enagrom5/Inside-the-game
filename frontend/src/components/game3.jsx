@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-unused-expressions */
 /* eslint-disable func-names */
 /* eslint-disable no-alert */
 /* eslint-disable react/prop-types */
@@ -23,7 +25,7 @@ function Game3({ setScore }) {
   useEffect(() => {
     const gameConfig = {
       type: Phaser.AUTO,
-      width: 780,
+      width: 740,
       height: 640,
       physics: {
         default: "arcade",
@@ -66,8 +68,8 @@ function Game3({ setScore }) {
     function create() {
       const map = this.make.tilemap({
         key: "map",
-        tileWidth: 16,
-        tileHeight: 16,
+        tileWidth: 32,
+        tileHeight: 32,
       });
 
       const land = map.addTilesetImage("TX Tileset Grass", "TX Tileset Grass");
@@ -83,11 +85,11 @@ function Game3({ setScore }) {
 
       const allLayer = [land, ground, Plant, Props, Struc, Wall, Shadow];
 
-      const sol = map.createLayer("Calque de Tuiles 1", allLayer, 0, 0);
-      const ombre = map.createLayer("ombre", allLayer, 0, 0);
-      const mur = map.createLayer("Calque de Tuiles 2", allLayer, 0, 0);
-      const statut = map.createLayer("Calque de Tuiles 3", allLayer, 0, 0);
-      console.info(sol, ombre, mur, statut);
+      const sol = map.createLayer("1", allLayer, 0, 0);
+      const ombre = map.createLayer("2", allLayer, 0, 0);
+      const mur = map.createLayer("3", allLayer, 0, 0);
+      const statut = map.createLayer("4", allLayer, 0, 0);
+      console.info(statut, sol, ombre, mur);
 
       chest = this.physics.add.staticGroup();
       chest.create(208, 110, "chest");
@@ -192,6 +194,8 @@ function Game3({ setScore }) {
         ennemi.setCollideWorldBounds(true);
 
         this.physics.add.collider(ennemi, ennemi);
+        this.physics.world.collide(player, sol);
+        sol.setCollisionBetween(67);
       }
       function hitEnnemi() {
         this.physics.pause();
@@ -240,14 +244,18 @@ function Game3({ setScore }) {
         player.anims.play("turn");
       }
       const random = Math.round(Math.random());
-
+      const acceleration = 20;
       allEnnemi.children.iterate(function (child) {
-        const vitesseX = Phaser.Math.Between(-150, 150); // Vitesse horizontale aléatoire
-        const vitesseY = Phaser.Math.Between(-150, 150); // Vitesse verticale aléatoire
+        const vitesseX = Phaser.Math.Between(-300, 300); // Vitesse horizontale aléatoire
+        const vitesseY = Phaser.Math.Between(-300, 300); // Vitesse verticale aléatoire
         if (random === 0) {
-          child.setVelocityX(vitesseX);
+          child.body.velocity.x < vitesseX
+            ? (child.body.velocity.x += acceleration)
+            : (child.body.velocity.x -= acceleration);
         } else {
-          child.setVelocityY(vitesseY);
+          child.body.velocity.y < vitesseY
+            ? (child.body.velocity.y += acceleration)
+            : (child.body.velocity.y -= acceleration);
         }
       });
     }
