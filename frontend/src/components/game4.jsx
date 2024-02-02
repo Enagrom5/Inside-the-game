@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/no-this-in-sfc */
 /* eslint-disable no-use-before-define */
@@ -11,7 +12,7 @@ import tree from "../assets/Tiles/The Fan-tasy Tileset (Free) 1.2.4/The Fan-tasy
 import road from "../assets/Tiles/The Fan-tasy Tileset (Free) 1.2.4/The Fan-tasy Tileset (Free)/Art/Tileset_Road.png";
 import grass from "../assets/Tiles/The Fan-tasy Tileset (Free) 1.2.4/The Fan-tasy Tileset (Free)/Art/Tileset_Ground.png";
 import rock from "../assets/Tiles/The Fan-tasy Tileset (Free) 1.2.4/The Fan-tasy Tileset (Free)/Art/Rocks.png";
-import face from "../assets/Tiles/Puny-Characters/Puny-Characters/charater_face.png";
+import face from "../assets/Tiles/Puny-Characters/Puny-Characters/face.png";
 import Chest from "../assets/Tiles/0x72_DungeonTilesetII_v1.6/0x72_DungeonTilesetII_v1.6/frames/chest_empty_open_anim_f0.png";
 import ChestOpen from "../assets/Tiles/0x72_DungeonTilesetII_v1.6/0x72_DungeonTilesetII_v1.6/frames/chest_empty_open_anim_f2.png";
 
@@ -39,8 +40,8 @@ function Game({ setScore }) {
       this.load.image("Tileset_Ground", grass);
       this.load.image("Rocks", rock);
       this.load.spritesheet("anthoface", face, {
-        frameWidth: 16,
-        frameHeight: 16,
+        frameWidth: 10,
+        frameHeight: 9,
       });
       this.load.image("chest", Chest);
       this.load.image("chest_open", ChestOpen);
@@ -49,12 +50,13 @@ function Game({ setScore }) {
     const game = new Phaser.Game(gameConfig);
     let player;
     let chest;
+    let collision;
     // let gameOver = false;
     function create() {
       const map = this.make.tilemap({
         key: "map",
-        tileWidth: 12,
-        tileHeight: 12,
+        tileWidth: 16,
+        tileHeight: 16,
       });
 
       const Water = map.addTilesetImage("Tileset_Water", "Tileset_Water");
@@ -66,11 +68,13 @@ function Game({ setScore }) {
 
       const allLayer = [Water, Props, Tree, Road, Ground, Rocks];
 
+      // eslint-disable-next-line no-unused-vars
       const layer1 = map.createLayer("Calque de Tuiles 1", allLayer, 0, 0);
       const layer3 = map.createLayer("Calque de Tuiles 3", allLayer, 0, 0);
       const layer2 = map.createLayer("Calque de Tuiles 2", allLayer, 0, 0);
+      collision = map.getObjectLayer("collision");
 
-      console.info(layer1, layer2, layer3);
+      console.info(collision);
 
       chest = this.physics.add.staticGroup();
       chest.create(158, 158, "chest");
@@ -80,112 +84,42 @@ function Game({ setScore }) {
       // AJOUT DE SES DEPLACEMENTS
 
       this.anims.create({
-        key: "left",
-        frames: this.anims.generateFrameNumbers("anthoface", {
-          start: 24,
-          end: 27,
-        }),
-        frameRate: 10,
-        repeat: -1,
-      });
-
-      this.anims.create({
         key: "turn",
-        frames: [{ key: "anthoface", frame: 1 }],
+        frames: [{ key: "anthoface", frame: 0 }],
         frameRate: 20,
       });
-
-      this.anims.create({
-        key: "right",
-        frames: this.anims.generateFrameNumbers("anthoface", {
-          start: 8,
-          end: 11,
-        }),
-        frameRate: 10,
-        repeat: -1,
-      });
-      this.anims.create({
-        key: "up",
-        frames: this.anims.generateFrameNumbers("anthoface", {
-          start: 16,
-          end: 19,
-        }),
-        frameRate: 10,
-        repeat: -1,
-      });
-      this.anims.create({
-        key: "down",
-        frames: this.anims.generateFrameNumbers("anthoface", {
-          start: 1,
-          end: 3,
-        }),
-        frameRate: 10,
-        repeat: -1,
-      });
-      this.anims.create({
-        key: "attack_down",
-        frames: this.anims.generateFrameNumbers("anthoface", {
-          start: 4,
-          end: 7,
-        }),
-        frameRate: 25,
-        repeat: -1,
-      });
-      this.anims.create({
-        key: "attack_up",
-        frames: this.anims.generateFrameNumbers("anthoface", {
-          start: 20,
-          end: 23,
-        }),
-        frameRate: 25,
-        repeat: -1,
-      });
-      this.anims.create({
-        key: "attack_left",
-        frames: this.anims.generateFrameNumbers("anthoface", {
-          start: 28,
-          end: 31,
-        }),
-        frameRate: 25,
-        repeat: -1,
-      });
-      this.anims.create({
-        key: "attack_right",
-        frames: this.anims.generateFrameNumbers("anthoface", {
-          start: 12,
-          end: 15,
-        }),
-        frameRate: 25,
-        repeat: -1,
-      });
-
-      this.physics.add.collider(player, Ground);
     }
     let cursors;
     function update() {
+      collision.objects.forEach((object) => {
+        const rect = new Phaser.Geom.Rectangle(
+          object.x,
+          object.y,
+          object.width,
+          object.height
+        );
+
+        const zone = this.add
+          .zone(rect.centerX, rect.centerY)
+          .setSize(rect.width, rect.height);
+        this.physics.add.existing(zone);
+
+        this.physics.add.collider(player, zone, () => {});
+      });
       cursors = this.input.keyboard.createCursorKeys();
-      if (cursors.shift.isDown && cursors.down.isDown) {
-        player.anims.play("attack_down", true);
-      } else if (cursors.shift.isDown && cursors.up.isDown) {
-        player.anims.play("attack_up", true);
-      } else if (cursors.shift.isDown && cursors.left.isDown) {
-        player.anims.play("attack_left", true);
-      } else if (cursors.shift.isDown && cursors.right.isDown) {
-        player.anims.play("attack_right", true);
-      } else if (cursors.left.isDown) {
-        player.setVelocityX(-100);
-        player.anims.play("left", true);
+
+      if (cursors.left.isDown) {
+        player.setVelocityX(-45);
+        player.anims.play("turn", true);
       } else if (cursors.right.isDown) {
-        player.setVelocityX(100);
-        player.anims.play("right", true);
+        player.setVelocityX(45);
+        player.anims.play("turn", true);
       } else if (cursors.up.isDown) {
-        player.setVelocityY(-100);
-        player.anims.play("up", true);
+        player.setVelocityY(-45);
+        player.anims.play("turn", true);
       } else if (cursors.down.isDown) {
-        player.setVelocityY(100);
-        player.anims.play("down", true);
-      } else if (cursors.shift.isDown) {
-        player.anims.play("attack_down", true);
+        player.setVelocityY(45);
+        player.anims.play("turn", true);
       } else {
         player.setVelocityX(0);
         player.setVelocityY(0);

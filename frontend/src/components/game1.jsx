@@ -1,3 +1,6 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-unused-expressions */
 /* eslint-disable func-names */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-alert */
@@ -40,7 +43,7 @@ function Game1({ setScore }) {
       this.load.image("chest", Chest);
       this.load.image("chest_open", ChestOpen);
       this.load.spritesheet("orc", orc, {
-        frameWidth: 20,
+        frameWidth: 18,
         frameHeight: 24,
       });
     }
@@ -51,6 +54,7 @@ function Game1({ setScore }) {
     let allEnnemi;
     let chest;
     let gameOver = false;
+    let boat;
     // let bombs;
 
     function create() {
@@ -65,7 +69,7 @@ function Game1({ setScore }) {
 
       const water = map.createLayer("eau", allLayer, 0, 0);
       const earth = map.createLayer("terre", allLayer, 0, 0);
-      const boat = map.createLayer("bateau", allLayer, 0, 0);
+      boat = map.createLayer("bateau", allLayer, 0, 0);
       const tree = map.createLayer("Calque de Tuiles 5", allLayer, 0, 0);
       const rest = map.createLayer("Calque de Tuiles 4", allLayer, 0, 0);
       console.info(earth, boat, rest);
@@ -177,54 +181,7 @@ function Game1({ setScore }) {
         this.physics.add.collider(ennemi, ennemi);
       }
 
-      // DEPLACEMENT DE L'ENNEMI avec animation mais pour le moment je n'arrivepas à la faire
-
-      // this.anims.create({
-      //   key: "ennemi_left",
-      //   frames: this.anims.generateFrameNumbers("orc", {
-      //     start: 10,
-      //     end: 13,
-      //   }),
-      //   frameRate: 10,
-      //   repeat: -1,
-      // });
-
-      // this.anims.create({
-      //   key: "ennemi_turn",
-      //   frames: [{ key: "orc", frame: 0 }],
-      //   frameRate: 20,
-      // });
-
-      // this.anims.create({
-      //   key: "ennemi_right",
-      //   frames: this.anims.generateFrameNumbers("orc", {
-      //     start: 4,
-      //     end: 7,
-      //   }),
-      //   frameRate: 10,
-      //   repeat: -1,
-      // });
-      // this.anims.create({
-      //   key: "ennemi_up",
-      //   frames: this.anims.generateFrameNumbers("orc", {
-      //     start: 8,
-      //     end: 11,
-      //   }),
-      //   frameRate: 10,
-      //   repeat: -1,
-      // });
-      // this.anims.create({
-      //   key: "ennemi_down",
-      //   frames: this.anims.generateFrameNumbers("orc", {
-      //     start: 0,
-      //     end: 3,
-      //   }),
-      //   frameRate: 10,
-      //   repeat: -1,
-      // });
-
       water.setCollisionBetween(368, 428);
-      tree.setCollisionBetween(257, 357);
 
       this.physics.add.collider(player, water);
 
@@ -246,6 +203,10 @@ function Game1({ setScore }) {
 
     let cursors;
     function update() {
+      boat.setCollisionBetween(329, 333);
+
+      this.physics.add.collider(player, boat);
+
       cursors = this.input.keyboard.createCursorKeys();
 
       if (cursors.shift.isDown && cursors.down.isDown) {
@@ -304,14 +265,18 @@ function Game1({ setScore }) {
         player.anims.play("turn");
 
         const random = Math.round(Math.random());
-
+        const acceleration = 10;
         allEnnemi.children.iterate(function (child) {
           const vitesseX = Phaser.Math.Between(-100, 100); // Vitesse horizontale aléatoire
           const vitesseY = Phaser.Math.Between(-100, 100); // Vitesse verticale aléatoire
           if (random === 0) {
-            child.setVelocityX(vitesseX);
+            child.body.velocity.x < vitesseX
+              ? (child.body.velocity.x += acceleration)
+              : (child.body.velocity.x -= acceleration);
           } else {
-            child.setVelocityY(vitesseY);
+            child.body.velocity.y < vitesseY
+              ? (child.body.velocity.y += acceleration)
+              : (child.body.velocity.y -= acceleration);
           }
         });
       }
